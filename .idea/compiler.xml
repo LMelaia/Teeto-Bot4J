@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <bytecodeTargetLevel>
+      <module name="builder_main" target="1.8" />
+      <module name="builder_test" target="1.8" />
+      <module name="common_main" target="1.8" />
+      <module name="common_test" target="1.8" />
+      <module name="container_main" target="1.8" />
+      <module name="container_test" target="1.8" />
+      <module name="installer_main" target="1.8" />
+      <module name="installer_test" target="1.8" />
+      <module name="uninstaller_main" target="1.8" />
+      <module name="uninstaller_test" target="1.8" />
+      <module name="uniscript-installer_main" target="1.8" />
+      <module name="uniscript-installer_test" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

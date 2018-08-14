@@ -1,0 +1,17 @@
+group 'teetobot'
+version '1.0-ALPHA'
+
+apply plugin: 'java'
+apply plugin: 'application'
+
+sourceCompatibility = 1.8
+
+mainClassName="net.lmelaia.teeto.Main"
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
