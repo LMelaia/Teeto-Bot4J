@@ -3,3 +3,6 @@
 # Build files
 /.gradle
 /build
+
+# Logs
+/logs/

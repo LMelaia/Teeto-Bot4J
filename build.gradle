@@ -3,6 +3,7 @@ version '1.0-ALPHA'
 
 apply plugin: 'java'
 apply plugin: 'application'
+apply plugin: 'idea'
 
 sourceCompatibility = 1.8
 
@@ -10,8 +11,28 @@ mainClassName="net.lmelaia.teeto.Main"
 
 repositories {
     mavenCentral()
+    jcenter()
+}
+
+idea {
+    module {
+        downloadJavadoc = true
+        downloadSources = true
+    }
 }
 
 dependencies {
+    //JDA (Java Discord API)
+    compile 'net.dv8tion:JDA:3.7.1_393'
+
+    //JUnit
     testCompile group: 'junit', name: 'junit', version: '4.12'
+
+    //Google Gson
+    //https://mvnrepository.com/artifact/com.google.code.gson/gson
+    compile group: 'com.google.code.gson', name: 'gson', version: '2.8.5'
+
+    //Log4J2
+    compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.8.2'
+    compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.8.2'
 }
