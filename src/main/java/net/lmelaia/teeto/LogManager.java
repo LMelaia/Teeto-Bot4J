@@ -17,7 +17,7 @@ public class LogManager {
     /**
      * Class that initialized the logger.
      */
-    private static String initializingClassName = null;
+    private static final String initializingClassName = null;
 
     /**
      * Logger for this class
