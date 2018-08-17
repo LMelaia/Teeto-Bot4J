@@ -2,7 +2,7 @@ package net.lmelaia.teeto;
 
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.core.LoggerContext;
-import org.apache.logging.log4j.util.ReflectionUtil;
+import org.apache.logging.log4j.util.*;
 
 import java.io.FileNotFoundException;
 import java.net.URISyntaxException;
@@ -12,7 +12,7 @@ public class LogManager {
     /**
      * Default logging configuration.
      */
-    private static final String DEFAULT_CONFIG_LOC = "configs/log4j.xml";
+    private static final String DEFAULT_CONFIG_LOC = Constants.getRelativeLog4jConfigFile();
 
     /**
      * Class that initialized the logger.
@@ -22,6 +22,7 @@ public class LogManager {
     /**
      * Logger for this class
      */
+    @SuppressWarnings("FieldCanBeLocal")
     private static Logger logger;
 
     /**
@@ -30,7 +31,8 @@ public class LogManager {
      * @param configFile the logger configuration file. The {@link #DEFAULT_CONFIG_LOC default} is used
      *                   if no file is specified.
      */
-    public static void initialize(String configFile){
+    static void initialize(@SuppressWarnings("SameParameterValue") String configFile){
+        //noinspection ConstantConditions
         if(initializingClassName != null)
             throw new IllegalStateException("Cannot initialize a new logger - logger already initialized by: "
                     + initializingClassName);
