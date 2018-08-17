@@ -29,7 +29,7 @@ using the command `type NUL > .TOKEN`.
 Explorer does not allow creating
 a `.name` file.
 
-###Running the bot.
+### Running the bot.
 With the token file in place. The bot is ready
 to run using the standard gradle task `:run`.
 
