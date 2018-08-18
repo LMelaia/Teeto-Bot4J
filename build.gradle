@@ -1,5 +1,5 @@
 group 'teetobot'
-version '1.0-ALPHA'
+version '1.0-Alpha'
 
 apply plugin: 'java'
 apply plugin: 'application'
@@ -41,3 +41,48 @@ dependencies {
     compile group: 'org.apache.logging.log4j', name: 'log4j-slf4j-impl', version: '2.8.2'
 
 }
+
+//#################################
+// Distribution zip modifications.
+//#################################
+//Copies the config folder to the distribution zip.
+//and then the token file to the unpacked distribution
+//zip
+
+//Unpacks the distribution zip in the build/distributions folder.
+task unzipDist(type: Copy) {
+    def zipFile = file("${buildDir}/distributions/" + "teetobot-" + version + ".zip")
+    def outputDir = file("${buildDir}/distributions")
+
+    from zipTree(zipFile)
+    into outputDir
+}
+
+//Copies the config folder to the unpacked zip folder
+task copyConfig(type: Copy) {
+    from "${projectDir}/config"
+    into "${buildDir}/distributions/teetobot-" + version + "/config"
+}
+
+//Recreates the distribution zip with the config folder.
+task recreateDistZip(type: Zip) {
+    from "${buildDir}/distributions/teetobot-" + version
+    include '*'
+    include '*/*' //to include contents of a folder present inside Reports directory
+    archiveName "teetobot-" + version + ".zip"
+    destinationDir(file("${buildDir}/distributions"))
+}
+
+//Copies the token file AFTER the distribution
+//has been created. This avoids releasing the token file
+//to git.
+task copyTokenFile(type: Copy) {
+    from "${projectDir}/.TOKEN"
+    into "${buildDir}/distributions/teetobot-" + version
+}
+
+//DistZip modifications.
+distZip.finalizedBy unzipDist
+unzipDist.finalizedBy copyConfig
+copyConfig.finalizedBy recreateDistZip
+recreateDistZip.finalizedBy copyTokenFile

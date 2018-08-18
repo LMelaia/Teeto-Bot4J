@@ -38,13 +38,19 @@ public class TeetoConfig {
     @SuppressWarnings("unused")
     private String[] commands;
 
+    /**
+     * The bots help command.
+     */
+    @SuppressWarnings("unused")
+    private String helpCommand;
+
     //Private constructor.
     private TeetoConfig(){}
 
     /**
      * @return the name of the bot.
      */
-    @SuppressWarnings("unused")
+    @SuppressWarnings({"unused", "WeakerAccess"})
     public String getName() {
         return name;
     }
@@ -52,7 +58,7 @@ public class TeetoConfig {
     /**
      * @return the version of the bot.
      */
-    @SuppressWarnings("unused")
+    @SuppressWarnings({"unused", "WeakerAccess"})
     public String getVersion() {
         return version;
     }
@@ -72,14 +78,21 @@ public class TeetoConfig {
      */
     static TeetoConfig getConfig() {
         try {
-            return Teeto.GSON.fromJson(new FileReader(TeetoConfig.class.getResource(
-                    Constants.getRelativeBotConfigFile())
-                    .getFile()), TeetoConfig.class);
+            return Teeto.GSON.fromJson(new FileReader(
+                    Constants.getBotConfigFile()), TeetoConfig.class);
         } catch (FileNotFoundException e) {
             LOG.log(Level.FATAL, "Bot config file not found", e);
             Teeto.shutdown();
         }
 
         return null;
+    }
+
+    /**
+     * @return the help command for the bot.
+     */
+    @SuppressWarnings("WeakerAccess")
+    public String getHelpCommand() {
+        return helpCommand;
     }
 }

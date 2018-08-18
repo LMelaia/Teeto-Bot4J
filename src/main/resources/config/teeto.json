@@ -1,5 +1,0 @@
-{
-  "name": "Teeto Bot",
-  "version": "1.0-Alpha",
-  "commands": ["teeto plz", "teeto please", "--"]
-}

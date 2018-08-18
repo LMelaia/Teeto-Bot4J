@@ -24,12 +24,11 @@ public final class Constants {
     }
 
     /**
-     * @return the path to the bots config file within
-     * the resources folder.
+     * @return the bot config file (config/bot.config.json).
      */
     @SuppressWarnings("WeakerAccess")
-    public static String getRelativeBotConfigFile(){
-        return "/config/teeto.json";
+    public static File getBotConfigFile(){
+        return new File(Teeto.getRunDirectory() + "/config/bot.config.json");
     }
 
     /**

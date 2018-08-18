@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
+import net.dv8tion.jda.core.entities.Game;
 import net.lmelaia.teeto.util.FileUtil;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.Logger;
@@ -62,6 +63,10 @@ public class Teeto {
      */
     private Teeto() throws InterruptedException, LoginException {
         JDABuilder builder = new JDABuilder(AccountType.BOT).setToken(getToken());
+
+        builder.setGame(Game.of(Game.GameType.DEFAULT,
+                teetoConfig.getName() + " v" + teetoConfig.getVersion() + " | " + teetoConfig.getHelpCommand()));
+
         try {
             javaDiscordAPI = builder.build().awaitReady();
         } catch (InterruptedException e) {
