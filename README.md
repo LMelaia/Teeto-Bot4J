@@ -31,7 +31,7 @@ a `.name` file.
 
 ### Running the bot.
 With the token file in place. The bot is ready
-to run using the standard gradle task `:run`.
+to run using the standard gradle task `:run`.-
 
 ## License
 GNU General Public License V3.0 (GNU GPL 3.0)
