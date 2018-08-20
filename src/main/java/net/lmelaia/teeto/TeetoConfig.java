@@ -22,26 +22,22 @@ public class TeetoConfig {
     /**
      * The name of the bot.
      */
-    @SuppressWarnings("unused")
     private String name;
 
     /**
      * The version of the bot.
      */
-    @SuppressWarnings("unused")
     private String version;
 
     /**
      * The commands or command prefixes
      * used to message the bot.
      */
-    @SuppressWarnings("unused")
-    private String[] commands;
+    private String[] commandPrefixes;
 
     /**
      * The bots help command.
      */
-    @SuppressWarnings("unused")
     private String helpCommand;
 
     //Private constructor.
@@ -50,7 +46,6 @@ public class TeetoConfig {
     /**
      * @return the name of the bot.
      */
-    @SuppressWarnings({"unused", "WeakerAccess"})
     public String getName() {
         return name;
     }
@@ -58,7 +53,6 @@ public class TeetoConfig {
     /**
      * @return the version of the bot.
      */
-    @SuppressWarnings({"unused", "WeakerAccess"})
     public String getVersion() {
         return version;
     }
@@ -67,9 +61,8 @@ public class TeetoConfig {
      * @return The commands or command
      * prefixes used to message the bot.
      */
-    @SuppressWarnings("unused")
-    public String[] getCommands() {
-        return commands;
+    public String[] getCommandPrefixes() {
+        return commandPrefixes;
     }
 
     /**
@@ -91,7 +84,6 @@ public class TeetoConfig {
     /**
      * @return the help command for the bot.
      */
-    @SuppressWarnings("WeakerAccess")
     public String getHelpCommand() {
         return helpCommand;
     }

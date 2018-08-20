@@ -1,0 +1,22 @@
+{
+  "commands": [
+    {
+      "commandID": ".help",
+      "names": ["help", "h", "help-me"],
+      "description": "Displays a message containing info on how to use me as well a list of all my commands. Alternatively, displays detailed information on one of my commands.",
+      "extraInfo": "Usage: \nhelp for a list of commands and information on how to use the bot\nhelp <command> for information on a command."
+    },
+    {
+      "commandID": ".list-commands",
+      "names": ["list-commands", "lc"],
+      "description": "Displays a message containing a list of all my commands.",
+      "extraInfo": null
+    },
+    {
+      "commandID": ".information",
+      "names": ["information", "info", "inf"],
+      "description": "Displays statistics about me. :wink:",
+      "extraInfo": null
+    }
+  ]
+}

@@ -5,6 +5,7 @@ import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
 import net.dv8tion.jda.core.entities.Game;
+import net.lmelaia.teeto.command.CommandManager;
 import net.lmelaia.teeto.util.FileUtil;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.Logger;
@@ -27,7 +28,6 @@ public class Teeto {
      * Single static instance provided to
      * minimise object construction.
      */
-    @SuppressWarnings("WeakerAccess")
     public static final Gson GSON = new Gson();
 
     /**
@@ -43,7 +43,6 @@ public class Teeto {
     /**
      * Configuration options for the bot. File: config/teeto.json
      */
-    @SuppressWarnings("unused")
     private TeetoConfig teetoConfig = TeetoConfig.getConfig();
 
     /**
@@ -76,14 +75,24 @@ public class Teeto {
             LOG.log(Level.FATAL, "Invalid login token.");
             throw e;
         }
+
+        CommandManager.init(javaDiscordAPI, teetoConfig.getCommandPrefixes());
     }
 
     /**
      * @return the Discord API instance.
      */
-    @SuppressWarnings("unused")
     public JDA getJavaDiscordAPI() {
         return javaDiscordAPI;
+    }
+
+    /**
+     * @return the configuration settings for the bot.
+     * This includes the name, version, command prefixes
+     * and help command.
+     */
+    public TeetoConfig getTeetoConfig(){
+        return this.teetoConfig;
     }
 
     //############################
@@ -98,7 +107,7 @@ public class Teeto {
      *                              is invalid (i.e. malformed or incorrect).
      * @throws InterruptedException If this thread is interrupted while waiting
      */
-    @SuppressWarnings({"UnusedReturnValue", "WeakerAccess"})
+    @SuppressWarnings("UnusedReturnValue")
     public static Teeto initTeeto() throws LoginException, InterruptedException {
         if (TEETO == null)
             TEETO = new Teeto();
@@ -112,7 +121,6 @@ public class Teeto {
      * Disconnects and nullifies the current bot instance
      * and teeto instance.
      */
-    @SuppressWarnings("WeakerAccess")
     public static void unInitTeeto() {
         if (TEETO == null)
             throw new IllegalStateException("Teeto not yet initialized.");
@@ -132,7 +140,6 @@ public class Teeto {
      * {@link #unInitTeeto() unitializes} the current teeto bot instance
      * and exits the program.
      */
-    @SuppressWarnings("WeakerAccess")
     public static void shutdown() {
         LOG.log(Level.INFO, "Shutdown requested");
 
@@ -146,7 +153,6 @@ public class Teeto {
     /**
      * @return the current teeto instance.
      */
-    @SuppressWarnings("unused")
     public static Teeto getTeeto() {
         if (TEETO == null)
             throw new IllegalStateException("Teeto not yet initialized.");
@@ -166,7 +172,6 @@ public class Teeto {
      * development environment and the parent folder
      * to /bin in a release environment.
      */
-    @SuppressWarnings("WeakerAccess")
     public static File getRunDirectory() {
         String runDir = System.getProperty("user.dir");
 

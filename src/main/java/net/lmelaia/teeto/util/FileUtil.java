@@ -10,7 +10,6 @@ public final class FileUtil {
     /**
      * Logger for this class.
      */
-    @SuppressWarnings("unused")
     private static final Logger LOG = LogManager.getLogger();
 
     //Private constructor.

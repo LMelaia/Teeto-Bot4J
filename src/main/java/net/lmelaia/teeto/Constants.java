@@ -38,4 +38,11 @@ public final class Constants {
     public static File getTokenFile(){
         return new File(Teeto.getRunDirectory() + "/.TOKEN");
     }
+
+    /**
+     * @return the commands.config.json file.
+     */
+    public static File getCommandsConfigFile(){
+        return new File(Teeto.getRunDirectory() + "/config/commands.config.json");
+    }
 }

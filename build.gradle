@@ -1,5 +1,5 @@
 group 'teetobot'
-version '1.0-Alpha'
+version '2.0-Alpha'
 
 apply plugin: 'java'
 apply plugin: 'application'
@@ -39,6 +39,11 @@ dependencies {
     //Slf4j-Log4j2
     //https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-slf4j-impl
     compile group: 'org.apache.logging.log4j', name: 'log4j-slf4j-impl', version: '2.8.2'
+
+    //Reflections library for annotation processing.
+    //https://mvnrepository.com/artifact/org.reflections/reflections
+    compile group: 'org.reflections', name: 'reflections', version: '0.9.10'
+
 
 }
 
