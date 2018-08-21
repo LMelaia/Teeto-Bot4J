@@ -68,8 +68,8 @@ public final class HelpCommands {
     public static void help(String[] args, MessageChannel channel){
         if(args.length == 1){
             channel.sendMessage(HELP_TEXT).embed(new EmbedBuilder()
-                    .setAuthor("Brought to you with love from Ki11er_wolf")
-                    .setFooter("Powered by The Salty Tears of your Toplane", null)
+                    .setAuthor(TEETO.getResponses().getResponse("help.author").get())
+                    .setFooter(TEETO.getResponses().getResponse("help.footer").get(), null)
                     .build()
             ).queue();
         } else if(args.length > 2) {

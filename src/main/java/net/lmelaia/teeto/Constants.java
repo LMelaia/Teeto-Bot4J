@@ -52,4 +52,11 @@ public final class Constants {
     public static File getTemplateFolder(){
         return new File(Teeto.getRunDirectory() + "/config/templates/");
     }
+
+    /**
+     * @return the responses.properties file.
+     */
+    public static File getResponsesFile(){
+        return new File(Teeto.getRunDirectory() + "/config/responses.properties");
+    }
 }

@@ -41,6 +41,11 @@ public class Teeto {
     private static Teeto TEETO;
 
     /**
+     * List of responses stored on file.
+     */
+    private final Responses responses;
+
+    /**
      * Configuration options for the bot. File: config/teeto.json
      */
     private TeetoConfig teetoConfig = TeetoConfig.getConfig();
@@ -62,6 +67,7 @@ public class Teeto {
      */
     private Teeto() throws InterruptedException, LoginException {
         JDABuilder builder = new JDABuilder(AccountType.BOT).setToken(getToken());
+        this.responses = new Responses();
 
         builder.setGame(Game.of(Game.GameType.DEFAULT,
                 teetoConfig.getName() + " v" + teetoConfig.getVersion() + " | " + teetoConfig.getHelpCommand()));
@@ -93,6 +99,13 @@ public class Teeto {
      */
     public TeetoConfig getTeetoConfig(){
         return this.teetoConfig;
+    }
+
+    /**
+     * @return the responses stored on file.
+     */
+    public Responses getResponses(){
+        return this.responses;
     }
 
     //############################
