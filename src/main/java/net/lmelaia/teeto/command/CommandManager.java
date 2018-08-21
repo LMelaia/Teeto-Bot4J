@@ -113,18 +113,23 @@ public final class CommandManager {
 
         if(mCommand == null){
             LOG.info("Command listener: " + command + " not found.");
-            channel.sendMessage("That command does not exist.").queue();
+            channel.sendMessage(
+                    Teeto.getTeeto().getResponses().getResponse("cmd.not_found")
+                            .setPlaceholder("{@command}", command.split(" ")[0]).get()
+            ).queue();
             return;
         }
 
         if(!Modifier.isStatic(mCommand.getModifiers())){
             LOG.error("Command listener method: " + mCommand.toString()
                     + " is not static and will NOT be executed.");
-            channel.sendMessage("Failed to execute command.").queue();
+            channel.sendMessage(Teeto.getTeeto().getResponses().getResponse("cmd.error").get()).queue();
         }
 
         if(invokeCommand(mCommand, channel, author, guild, command.split(" ")) == Boolean.FALSE)
-            channel.sendMessage("Failed to execute command.").queue();
+            channel.sendMessage(
+                    Teeto.getTeeto().getResponses().getResponse("cmd.error").get()
+            ).queue();
     }
 
     /**

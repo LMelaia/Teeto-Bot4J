@@ -73,11 +73,18 @@ public final class HelpCommands {
                     .build()
             ).queue();
         } else if(args.length > 2) {
-            channel.sendMessage("`help` doesn't not take " + args.length + " arguments.")
-            .queue();
+            channel.sendMessage(
+                    Teeto.getTeeto().getResponses().getResponse("cmd.arg_length_error")
+                    .setPlaceholder("{@command}", "help")
+                    .setPlaceholder("{@argLength}", String.valueOf(args.length - 1))
+                    .get()
+            ).queue();
         } else {
             if(CommandManager.getInstance().getCommandIDFromName(args[1]) == null) {
-                channel.sendMessage("The command `" + args[1] + "` does not exist").queue();
+                channel.sendMessage(
+                        Teeto.getTeeto().getResponses().getResponse("cmd.not_found")
+                        .setPlaceholder("{@command}", args[1]).get()
+                ).queue();
                 return;
             }
 
@@ -113,7 +120,7 @@ public final class HelpCommands {
      */
     @CommandHandler(".information")
     public static String information(){
-        return "Not yet implemented";
+        return Teeto.getTeeto().getResponses().getResponse("cmd.not_implemented").get();
     }
 
     /**

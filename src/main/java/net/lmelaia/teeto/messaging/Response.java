@@ -1,4 +1,4 @@
-package net.lmelaia.teeto;
+package net.lmelaia.teeto.messaging;
 
 /**
  * Represents a response stored in the responses.properties

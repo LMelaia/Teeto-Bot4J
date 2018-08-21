@@ -1,5 +1,8 @@
-package net.lmelaia.teeto;
+package net.lmelaia.teeto.messaging;
 
+import net.lmelaia.teeto.Constants;
+import net.lmelaia.teeto.LogManager;
+import net.lmelaia.teeto.Teeto;
 import org.apache.logging.log4j.Logger;
 
 import java.io.FileReader;
@@ -27,7 +30,7 @@ public class Responses {
      * Constructs a new properties instance
      * and loads the properties from file.
      */
-    Responses(){
+    public Responses(){
         try {
             responses.load(new FileReader(Constants.getResponsesFile()));
         } catch (IOException e) {

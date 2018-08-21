@@ -6,6 +6,7 @@ import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
 import net.dv8tion.jda.core.entities.Game;
 import net.lmelaia.teeto.command.CommandManager;
+import net.lmelaia.teeto.messaging.Responses;
 import net.lmelaia.teeto.util.FileUtil;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.Logger;
