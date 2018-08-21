@@ -36,6 +36,14 @@ public final class CommandInfo {
     private final String extraInfo;
 
     /**
+     * True if the command should be displayed
+     * in help messages and make public to anyone.
+     * False if the command should not be made
+     * known.
+     */
+    private final boolean visible;
+
+    /**
      * Private constructor. Creates a new command info object.
      *
      * @param commandID The unique ID of the command. This is
@@ -46,11 +54,12 @@ public final class CommandInfo {
      * @param extraInfo Optional extra detailed information about the command
      *      * and how to use it.
      */
-    CommandInfo(String commandID, String[] names, String description, String extraInfo){
+    CommandInfo(String commandID, String[] names, String description, String extraInfo, boolean visible){
         this.commandID = commandID;
         this.names = names;
         this.description = description;
         this.extraInfo = extraInfo;
+        this.visible = visible;
     }
 
     /**
@@ -82,5 +91,15 @@ public final class CommandInfo {
      */
     public String getExtraInfo() {
         return extraInfo;
+    }
+
+    /**
+     * @return True if the command should be displayed
+     * in help messages and make public to anyone.
+     * False if the command should not be made
+     * known.
+     */
+    public boolean isVisible() {
+        return visible;
     }
 }

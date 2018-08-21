@@ -47,7 +47,8 @@ class CommandMap {
                     command.get("commandID").getAsString(),
                     jsonArrayToStringArray(command.get("names").getAsJsonArray()),
                     command.get("description").getAsString(),
-                    (command.get("extraInfo").isJsonNull()) ? null : command.get("extraInfo").getAsString()
+                    (command.get("extraInfo").isJsonNull()) ? null : command.get("extraInfo").getAsString(),
+                    command.get("visible").getAsBoolean()
             );
 
             for (String name: commandInfo.getNames()) {

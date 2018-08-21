@@ -4,19 +4,22 @@
       "commandID": ".help",
       "names": ["help", "h", "help-me"],
       "description": "Displays a message containing info on how to use me as well a list of all my commands. Alternatively, displays detailed information on one of my commands.",
-      "extraInfo": "Usage: \nhelp for a list of commands and information on how to use the bot\nhelp <command> for information on a command."
+      "extraInfo": "`help` for general information about me and how to use me, as well a list of my commands.\n`help <command>`, where <command> is any one of the names of a command, for detailed information about the command",
+      "visible": true
     },
     {
       "commandID": ".list-commands",
-      "names": ["list-commands", "lc"],
+      "names": ["list-commands", "lc", "list-your-commands"],
       "description": "Displays a message containing a list of all my commands.",
-      "extraInfo": null
+      "extraInfo": null,
+      "visible": true
     },
     {
       "commandID": ".information",
-      "names": ["information", "info", "inf"],
+      "names": ["information", "info", "inf", "show-me-your-secrets"],
       "description": "Displays statistics about me. :wink:",
-      "extraInfo": null
+      "extraInfo": null,
+      "visible": false
     }
   ]
 }

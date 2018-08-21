@@ -45,4 +45,11 @@ public final class Constants {
     public static File getCommandsConfigFile(){
         return new File(Teeto.getRunDirectory() + "/config/commands.config.json");
     }
+
+    /**
+     * @return the templates folder.
+     */
+    public static File getTemplateFolder(){
+        return new File(Teeto.getRunDirectory() + "/config/templates/");
+    }
 }
