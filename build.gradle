@@ -25,6 +25,8 @@ dependencies {
     //JDA (Java Discord API)
     compile 'net.dv8tion:JDA:3.7.1_393'
 
+    compile 'com.sedmelluq:lavaplayer:1.3.7'
+
     //JUnit
     testCompile group: 'junit', name: 'junit', version: '4.12'
 
@@ -43,8 +45,6 @@ dependencies {
     //Reflections library for annotation processing.
     //https://mvnrepository.com/artifact/org.reflections/reflections
     compile group: 'org.reflections', name: 'reflections', version: '0.9.10'
-
-
 }
 
 //#################################
@@ -63,10 +63,21 @@ task unzipDist(type: Copy) {
     into outputDir
 }
 
+task deleteDist(type: Delete) {
+    delete "${buildDir}/distributions/"
+    followSymlinks = true
+}
+
 //Copies the config folder to the unpacked zip folder
 task copyConfig(type: Copy) {
     from "${projectDir}/config"
     into "${buildDir}/distributions/teetobot-" + version + "/config"
+}
+
+//Copies the audio folder to the unpacked zip folder
+task copyAudio(type: Copy) {
+    from "${projectDir}/audio"
+    into "${buildDir}/distributions/teetobot-" + version + "/audio"
 }
 
 //Recreates the distribution zip with the config folder.
@@ -74,6 +85,7 @@ task recreateDistZip(type: Zip) {
     from "${buildDir}/distributions/teetobot-" + version
     include '*'
     include '*/*' //to include contents of a folder present inside Reports directory
+    include '*/*/*'
     archiveName "teetobot-" + version + ".zip"
     destinationDir(file("${buildDir}/distributions"))
 }
@@ -87,7 +99,9 @@ task copyTokenFile(type: Copy) {
 }
 
 //DistZip modifications.
+distZip.dependsOn deleteDist
 distZip.finalizedBy unzipDist
 unzipDist.finalizedBy copyConfig
+unzipDist.finalizedBy copyAudio
 copyConfig.finalizedBy recreateDistZip
 recreateDistZip.finalizedBy copyTokenFile

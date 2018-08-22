@@ -12,3 +12,7 @@
 # Token file
 /.TOKEN
 *.TOKEN
+
+# Audio files
+/audio/
+*.mp3

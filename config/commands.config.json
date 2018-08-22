@@ -4,7 +4,7 @@
       "commandID": ".help",
       "names": ["help", "h", "help-me"],
       "description": "Displays a message containing info on how to use me as well a list of all my commands. Alternatively, displays detailed information on one of my commands.",
-      "extraInfo": "`help` for general information about me and how to use me, as well a list of my commands.\n`help <command>`, where <command> is any one of the names of a command, for detailed information about the command",
+      "extraInfo": "`help` for general information about me and how to use me, as well a list of my commands.`help <command>`, where <command> is any one of the aliases of a command, for detailed information about the command",
       "visible": true
     },
     {
@@ -18,6 +18,20 @@
       "commandID": ".information",
       "names": ["information", "info", "inf", "show-me-your-secrets"],
       "description": "Displays statistics about me. :wink:",
+      "extraInfo": null,
+      "visible": false
+    },
+    {
+      "commandID": ".system.shutdown",
+      "names": ["shutdown", "drop-dead", "s"],
+      "description": "Terminates the bot and bot application.",
+      "extraInfo": null,
+      "visible": false
+    },
+    {
+      "commandID": ".system.reboot",
+      "names": ["reboot", "reboot-yourself", "r"],
+      "description": "Restarts the bot and bot application.",
       "extraInfo": null,
       "visible": false
     }

@@ -1,0 +1,10 @@
+{
+  "audioFiles": [
+    {
+      "id": ".nyan_cat",
+      "names": ["nyan", "nyan-cat"],
+      "displayName": "Nyan Cat",
+      "fileName": "nyan_cat_original.mp3"
+    }
+  ]
+}

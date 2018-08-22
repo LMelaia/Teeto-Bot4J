@@ -59,4 +59,18 @@ public final class Constants {
     public static File getResponsesFile(){
         return new File(Teeto.getRunDirectory() + "/config/responses.properties");
     }
+
+    /**
+     * @return the audio.config.json file.
+     */
+    public static File getAudioConfigFile(){
+        return new File(Teeto.getRunDirectory() + "/config/audio.config.json");
+    }
+
+    /**
+     * @return the audio folder where audio files are kept.
+     */
+    public static File getAudioFolder(){
+        return new File(Teeto.getRunDirectory() + "/audio/");
+    }
 }

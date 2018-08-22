@@ -5,6 +5,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.lmelaia.teeto.Constants;
 import net.lmelaia.teeto.Teeto;
+import net.lmelaia.teeto.util.JsonUtil;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -45,7 +46,7 @@ class CommandMap {
 
             CommandInfo commandInfo = new CommandInfo(
                     command.get("commandID").getAsString(),
-                    jsonArrayToStringArray(command.get("names").getAsJsonArray()),
+                    JsonUtil.jsonArrayToStringArray(command.get("names").getAsJsonArray()),
                     command.get("description").getAsString(),
                     (command.get("extraInfo").isJsonNull()) ? null : command.get("extraInfo").getAsString(),
                     command.get("visible").getAsBoolean()
@@ -80,22 +81,5 @@ class CommandMap {
      */
     CommandInfo[] getAllCommands(){
         return map.values().toArray(new CommandInfo[0]);
-    }
-
-    /**
-     * Constructs a new String array from a json array.
-     *
-     * @param jsonArray the json array.
-     * @return the newly constructed String array.
-     */
-    private static String[] jsonArrayToStringArray(JsonArray jsonArray) {
-        int arraySize = jsonArray.size();
-        String[] stringArray = new String[arraySize];
-
-        for(int i=0; i<arraySize; i++) {
-            stringArray[i] = jsonArray.get(i).getAsString();
-        }
-
-        return stringArray;
     }
 }

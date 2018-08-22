@@ -45,7 +45,7 @@ public final class HelpCommands {
                     .setPlaceholder("{@name}", TEETO.getTeetoConfig().getName())
                     .setPlaceholder("{@commandPrefixes}", getCommandPrefixes())
                     .setPlaceholder("{@nameCap}", TEETO.getTeetoConfig().getName().toUpperCase())
-                    .setPlaceholder("{@commandList}", getCommandList(false))
+                    .setPlaceholder("{@commandList}", getCommandList(false, false))
                     .build();
         } catch (IOException e) {
             LOG.fatal("Failed to get help template", e);
@@ -55,6 +55,9 @@ public final class HelpCommands {
         }
 
     }
+
+    //Private constructor
+    private HelpCommands(){}
 
     /**
      * Help command.
@@ -105,8 +108,12 @@ public final class HelpCommands {
      * @return a list of all commands as a String.
      */
     @CommandHandler(".list-commands")
-    public static String listCommands(){
-        return getCommandList(true);
+    public static String listCommands(String[] args){
+        if(args.length == 2 && args[1].equals("-unlisted")){
+            return getCommandList(true, true);
+        }
+
+        return getCommandList(true, false);
     }
 
     /**
@@ -139,13 +146,14 @@ public final class HelpCommands {
 
     /**
      * @param detailed if true, the commands extra information will be included.
+     * @param showUnlisted if true, shows invisible commands.
      * @return a styled discord string displaying all the commands.
      */
-    private static String getCommandList(boolean detailed){
+    private static String getCommandList(boolean detailed, boolean showUnlisted){
         StringBuilder result = new StringBuilder();
 
         for(CommandInfo commandInfo : CommandManager.getInstance().getAllCommandInfoObjects()){
-            if(!commandInfo.isVisible())
+            if(!commandInfo.isVisible() && !showUnlisted)
                 continue;
             result.append(getCommandInfo(detailed, commandInfo)).append("\n\n");
         }
@@ -163,12 +171,12 @@ public final class HelpCommands {
 
         result.append("Command: `").append(commandInfo.getNames()[0]).append("`\n");
         result.append("Aliases: ").append(getCommandAliases(commandInfo)).append("\n");
-        result.append("Description: ").append(commandInfo.getDescription());
+        result.append("**").append("Description: ").append(commandInfo.getDescription()).append("**");
         if(detailed)
-            result.append("\nExtra Information: ").append(
+            result.append("__").append("\nExtra Information: ").append(
                     (commandInfo.getExtraInfo() == null)
                             ? "`No Extra Information`" : commandInfo.getExtraInfo()
-            );
+            ).append("__");
 
         return result.toString();
     }

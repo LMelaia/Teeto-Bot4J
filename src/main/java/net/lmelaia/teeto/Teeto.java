@@ -5,8 +5,10 @@ import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
 import net.dv8tion.jda.core.entities.Game;
+import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.events.*;
 import net.dv8tion.jda.core.hooks.EventListener;
+import net.lmelaia.teeto.Audio.AudioManager;
 import net.lmelaia.teeto.command.CommandManager;
 import net.lmelaia.teeto.messaging.Responses;
 import net.lmelaia.teeto.util.FileUtil;
@@ -45,6 +47,11 @@ public class Teeto {
     private static final EventLogger EVENT_LOGGER = new EventLogger();
 
     /**
+     * The OS name the application is running on.
+     */
+    private static final String OS = System.getProperty("os.name").toLowerCase();
+
+    /**
      * Singleton instance.
      */
     private static Teeto TEETO;
@@ -77,9 +84,10 @@ public class Teeto {
     private Teeto() throws InterruptedException, LoginException {
         Thread.currentThread().setUncaughtExceptionHandler(new ApplicationUncaughtExceptionHandler());
         LOG.info("Set exception handler.");
+        this.responses = new Responses();
+
         JDABuilder builder = new JDABuilder(AccountType.BOT).setToken(getToken());
         builder.addEventListener(EVENT_LOGGER);
-        this.responses = new Responses();
 
         builder.setGame(Game.of(Game.GameType.DEFAULT,
                 teetoConfig.getName() + " v" + teetoConfig.getVersion() + " | " + teetoConfig.getHelpCommand()));
@@ -94,6 +102,7 @@ public class Teeto {
             throw e;
         }
 
+        AudioManager.init();
         CommandManager.init(javaDiscordAPI, teetoConfig.getCommandPrefixes());
     }
 
@@ -118,6 +127,14 @@ public class Teeto {
      */
     public Responses getResponses(){
         return this.responses;
+    }
+
+    private void disconnectAllBotsFromVoice(){
+        LOG.info("Disconnecting all bots.");
+        for(Guild g : javaDiscordAPI.getGuilds()){
+            AudioManager.getAudioManager().getAudioPlayer(g).disconnectFromVoice();
+            LOG.info("Disconnected bot from guild: " + g.getName());
+        }
     }
 
     //############################
@@ -154,6 +171,7 @@ public class Teeto {
             LOG.log(Level.DEBUG, "Bot not running. Skipping disconnect");
         } else {
             LOG.log(Level.DEBUG, "Shutting down bot...");
+            TEETO.disconnectAllBotsFromVoice();
             TEETO.javaDiscordAPI.shutdown();
         }
 
@@ -205,6 +223,22 @@ public class Teeto {
         }
 
         return new File(runDir);
+    }
+
+    /**
+     * @return {@code true} if the application
+     * is running on windows.
+     */
+    public static boolean isWindows() {
+        return (OS.contains("win"));
+    }
+
+    /**
+     * @return {@code true} if the application
+     * is running on linux/unix.
+     */
+    public static boolean isUnix() {
+        return (OS.contains("nix") || OS.contains("nux") || OS.indexOf("aix") > 0 );
     }
 
     //##########################
