@@ -36,6 +36,9 @@ public class Main {
             Teeto.initTeeto();
         } catch (LoginException | InterruptedException e) {
             Teeto.shutdown();
+        } catch (Exception e){
+            LOG.fatal("Exception thrown during bot boot", e);
+            Teeto.shutdown();
         }
     }
 }

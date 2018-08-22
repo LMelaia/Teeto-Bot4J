@@ -5,6 +5,8 @@ import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
 import net.dv8tion.jda.core.entities.Game;
+import net.dv8tion.jda.core.events.*;
+import net.dv8tion.jda.core.hooks.EventListener;
 import net.lmelaia.teeto.command.CommandManager;
 import net.lmelaia.teeto.messaging.Responses;
 import net.lmelaia.teeto.util.FileUtil;
@@ -14,6 +16,7 @@ import org.apache.logging.log4j.Logger;
 import javax.security.auth.login.LoginException;
 import java.io.File;
 import java.io.IOException;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Bot class.
@@ -35,6 +38,11 @@ public class Teeto {
      * Logger for this class.
      */
     private static final Logger LOG = LogManager.getLogger();
+
+    /**
+     * Logs events.
+     */
+    private static final EventLogger EVENT_LOGGER = new EventLogger();
 
     /**
      * Singleton instance.
@@ -67,7 +75,10 @@ public class Teeto {
      *                              invalid (e.i. malformed, incorrect)
      */
     private Teeto() throws InterruptedException, LoginException {
+        Thread.currentThread().setUncaughtExceptionHandler(new ApplicationUncaughtExceptionHandler());
+        LOG.info("Set exception handler.");
         JDABuilder builder = new JDABuilder(AccountType.BOT).setToken(getToken());
+        builder.addEventListener(EVENT_LOGGER);
         this.responses = new Responses();
 
         builder.setGame(Game.of(Game.GameType.DEFAULT,
@@ -212,5 +223,99 @@ public class Teeto {
         }
 
         return null;
+    }
+
+    /**
+     * Implements various events and logs
+     * the event when fired. This makes
+     * debugging network errors and
+     * other serious runtime errors.
+     */
+    private static class EventLogger implements EventListener {
+
+        /**
+         * Logger for this class.
+         */
+        private static final Logger LOG = LogManager.getLogger();
+
+        /**
+         * Determines the event and calls the appropriate method.
+         *
+         * @param evt the event.
+         */
+        @Override
+        public void onEvent(Event evt) {
+            if(evt instanceof DisconnectEvent)
+                logDisconnectEvent((DisconnectEvent) evt);
+            else if(evt instanceof ShutdownEvent)
+                logShutdownEvent((ShutdownEvent) evt);
+            else if(evt instanceof ExceptionEvent)
+                logExceptionEvent((ExceptionEvent) evt);
+            else if(evt instanceof StatusChangeEvent)
+                logStatusChangeEvent((StatusChangeEvent) evt);
+            else if(evt instanceof ReconnectedEvent)
+                logReconnectedEvent((ReconnectedEvent) evt);
+            else if(evt instanceof ResumedEvent)
+                logResumedEvent((ResumedEvent) evt);
+            else if(evt instanceof ReadyEvent)
+                logReadyEvent((ReadyEvent) evt);
+        }
+
+        //###############
+        //  LOG METHODS
+        //###############
+
+        private void logReadyEvent(ReadyEvent evt) {
+            LOG.info("Ready");
+        }
+
+        private void logResumedEvent(ResumedEvent evt) {
+            LOG.info("Resumed");
+        }
+
+        private void logReconnectedEvent(ReconnectedEvent evt) {
+            LOG.info("Reconnected");
+        }
+
+        private void logStatusChangeEvent(StatusChangeEvent evt) {
+            LOG.info(String.format("Status changed from %s to %s",
+                    evt.getOldStatus().name(), evt.getNewStatus().name()));
+        }
+
+        private void logExceptionEvent(ExceptionEvent evt) {
+            if(!evt.isLogged())
+                LOG.error("Exception went unlogged in discord api: ", evt.getCause());
+        }
+
+        private void logShutdownEvent(ShutdownEvent evt) {
+            LOG.info(String.format("Shutting down. Details: [code: %s, code_reason: %s, at:%s]",
+                    evt.getCloseCode().getCode(), evt.getCloseCode().getMeaning(),
+                    evt.getShutdownTime().format(DateTimeFormatter.ISO_DATE_TIME)));
+        }
+
+        private void logDisconnectEvent(DisconnectEvent event){
+            LOG.warn(String.format(
+                    "DISCONNECTED. Details: [is_server: %s, at:%s]",
+                    event.isClosedByServer(),
+                    event.getDisconnectTime().format(DateTimeFormatter.ISO_DATE_TIME)));
+        }
+    }
+
+    /**
+     * Handles uncaught exceptions on the main thread.
+     */
+    private static class ApplicationUncaughtExceptionHandler implements Thread.UncaughtExceptionHandler{
+
+        /**
+         * Logs the error and shuts the application down.
+         *
+         * @param t thread on which the error occurred.
+         * @param e the cause of the error.
+         */
+        @Override
+        public void uncaughtException(Thread t, Throwable e) {
+            LOG.fatal(String.format("Exception went uncaught and propagated up [%s]", t.getName()), e);
+            shutdown();
+        }
     }
 }
