@@ -1,12 +1,12 @@
-package net.lmelaia.teeto.Audio;
+package net.lmelaia.teeto.audio;
 
 import com.sedmelluq.discord.lavaplayer.player.AudioLoadResultHandler;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.player.event.AudioEventAdapter;
-import com.sedmelluq.discord.lavaplayer.player.event.AudioEventListener;
 import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
+import net.dv8tion.jda.core.audio.hooks.ConnectionStatus;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.VoiceChannel;
 import net.dv8tion.jda.core.managers.AudioManager;
@@ -141,8 +141,7 @@ public class AudioPlayer {
      */
     public void play(String identifier){
         if(!getAudioManager().isConnected()){
-            LOG.warn("Attempt to play song when not connected to voice channel. Ignoring attempt.");
-            return;
+            LOG.warn("Attempt to play song when not connected to voice channel. Going ahead anyway");
         }
 
         load(identifier);
@@ -154,6 +153,47 @@ public class AudioPlayer {
     public void stop(){
         LOG.info("Stopping track in guild: " + guild);
         internalPlayer.stopTrack();
+    }
+
+    /**
+     * @return {@code true} if the audio player is
+     * playing a track.
+     */
+    public boolean isPlaying(){
+        return internalPlayer.getPlayingTrack() != null;
+    }
+
+    /**
+     * @return the currently playing track
+     * or {@code null} if no track is
+     * playing.
+     */
+    public AudioTrack getPlayingTrack(){
+        return internalPlayer.getPlayingTrack();
+    }
+
+    /**
+     * @return the VoiceChannel the bot is connected
+     * to in the guild or {@code null} if the bot
+     * is not connected to voice.
+     */
+    public VoiceChannel getConnectedChannel(){
+        return getAudioManager().getConnectedChannel();
+    }
+
+    /**
+     * @return {@code true} if the bot is connected
+     * to a voice channel within the current guild.
+     */
+    public boolean isConnected(){
+        return getAudioManager().getConnectionStatus() == ConnectionStatus.CONNECTED;
+    }
+
+    /**
+     * @return the audio send handler wrapper.
+     */
+    public JDAAudioSendHandler getSendHandler() {
+        return new JDAAudioSendHandler(internalPlayer);
     }
 
     /**
@@ -221,12 +261,5 @@ public class AudioPlayer {
      */
     private AudioManager getAudioManager(){
         return guild.getAudioManager();
-    }
-
-    /**
-     * @return the audio send handler wrapper.
-     */
-    public JDAAudioSendHandler getSendHandler() {
-        return new JDAAudioSendHandler(internalPlayer);
     }
 }

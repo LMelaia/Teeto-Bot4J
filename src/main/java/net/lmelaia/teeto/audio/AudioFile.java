@@ -1,4 +1,4 @@
-package net.lmelaia.teeto.Audio;
+package net.lmelaia.teeto.audio;
 
 import java.io.File;
 

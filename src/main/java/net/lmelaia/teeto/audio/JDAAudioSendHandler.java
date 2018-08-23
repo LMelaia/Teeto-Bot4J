@@ -1,4 +1,4 @@
-package net.lmelaia.teeto.Audio;
+package net.lmelaia.teeto.audio;
 
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.track.playback.AudioFrame;

@@ -11,6 +11,8 @@ import net.lmelaia.teeto.util.TemplateBuilder;
 import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A set of commands designed to aid the user
@@ -45,7 +47,6 @@ public final class HelpCommands {
                     .setPlaceholder("{@name}", TEETO.getTeetoConfig().getName())
                     .setPlaceholder("{@commandPrefixes}", getCommandPrefixes())
                     .setPlaceholder("{@nameCap}", TEETO.getTeetoConfig().getName().toUpperCase())
-                    .setPlaceholder("{@commandList}", getCommandList(false, false))
                     .build();
         } catch (IOException e) {
             LOG.fatal("Failed to get help template", e);
@@ -67,7 +68,7 @@ public final class HelpCommands {
      * bot usage instructions and a list of all commands or
      * detailed information of a command.
      */
-    @CommandHandler(".help")
+    @CommandHandler(".help.help")
     public static void help(String[] args, MessageChannel channel){
         if(args.length == 1){
             channel.sendMessage(HELP_TEXT).embed(new EmbedBuilder()
@@ -75,6 +76,9 @@ public final class HelpCommands {
                     .setFooter(TEETO.getResponses().getResponse("help.footer").get(), null)
                     .build()
             ).queue();
+
+            for(String command : getCommandList(true, false))
+                channel.sendMessage(command).queue();
         } else if(args.length > 2) {
             channel.sendMessage(
                     Teeto.getTeeto().getResponses().getResponse("cmd.arg_length_error")
@@ -104,16 +108,16 @@ public final class HelpCommands {
      * Sends a message back to the user in the message
      * channel the command came from, displaying a list
      * of all commands.
-     *
-     * @return a list of all commands as a String.
      */
-    @CommandHandler(".list-commands")
-    public static String listCommands(String[] args){
+    @CommandHandler(".help.list-commands")
+    public static void listCommands(String[] args, MessageChannel channel){
         if(args.length == 2 && args[1].equals("-unlisted")){
-            return getCommandList(true, true);
+            for(String command : getCommandList(true, true))
+                channel.sendMessage(command).queue();
         }
 
-        return getCommandList(true, false);
+        for(String command : getCommandList(true, false))
+            channel.sendMessage(command).queue();
     }
 
     /**
@@ -125,7 +129,7 @@ public final class HelpCommands {
      *
      * @return bot statistics and information as a String.
      */
-    @CommandHandler(".information")
+    @CommandHandler(".help.information")
     public static String information(){
         return Teeto.getTeeto().getResponses().getResponse("cmd.not_implemented").get();
     }
@@ -149,16 +153,16 @@ public final class HelpCommands {
      * @param showUnlisted if true, shows invisible commands.
      * @return a styled discord string displaying all the commands.
      */
-    private static String getCommandList(boolean detailed, boolean showUnlisted){
-        StringBuilder result = new StringBuilder();
+    private static String[] getCommandList(boolean detailed, boolean showUnlisted){
+        List<String> commands = new ArrayList<>();
 
         for(CommandInfo commandInfo : CommandManager.getInstance().getAllCommandInfoObjects()){
             if(!commandInfo.isVisible() && !showUnlisted)
                 continue;
-            result.append(getCommandInfo(detailed, commandInfo)).append("\n\n");
+            commands.add(getCommandInfo(detailed, commandInfo) + "\n.\n");
         }
 
-        return result.toString();
+        return commands.toArray(new String[0]);
     }
 
     /**

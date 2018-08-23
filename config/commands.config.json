@@ -1,21 +1,21 @@
 {
   "commands": [
     {
-      "commandID": ".help",
+      "commandID": ".help.help",
       "names": ["help", "h", "help-me"],
       "description": "Displays a message containing info on how to use me as well a list of all my commands. Alternatively, displays detailed information on one of my commands.",
-      "extraInfo": "`help` for general information about me and how to use me, as well a list of my commands.`help <command>`, where <command> is any one of the aliases of a command, for detailed information about the command",
+      "extraInfo": "Usage: \"help\" for general information about me and how to use me, as well a list of my commands.\"help <command>\", where <command> is any one of the aliases of a command, for detailed information about the command",
       "visible": true
     },
     {
-      "commandID": ".list-commands",
+      "commandID": ".help.list-commands",
       "names": ["list-commands", "lc", "list-your-commands"],
       "description": "Displays a message containing a list of all my commands.",
       "extraInfo": null,
       "visible": true
     },
     {
-      "commandID": ".information",
+      "commandID": ".help.information",
       "names": ["information", "info", "inf", "show-me-your-secrets"],
       "description": "Displays statistics about me. :wink:",
       "extraInfo": null,
@@ -34,6 +34,48 @@
       "description": "Restarts the bot and bot application.",
       "extraInfo": null,
       "visible": false
+    },
+    {
+      "commandID": ".audio.disconnect",
+      "names": ["disconnect", "fuck-off", "dc"],
+      "description": "Disconnects Teeto from the voice channel he is in.",
+      "extraInfo": "This command MUST be used in a guild's text channel.",
+      "visible": true
+    },
+    {
+      "commandID": ".audio.reset",
+      "names": ["reset-audio", "fix-audio", "fix", "fx"],
+      "description": "Disconnects and then reconnects Teeto to the voice channel he is in. This should fix any issues with voice playback.",
+      "extraInfo": "This command MUST be used in a guild's text channel.",
+      "visible": true
+    },
+    {
+      "commandID": ".audio.play",
+      "names": ["go-to-hell", "suffer", "sfr"],
+      "description": "Sends Teeto to the guilds designated \"Hell\" to play his worst nightmare for all eternity.",
+      "extraInfo": "This command MUST be used in a guild's text channel.",
+      "visible": true
+    },
+    {
+      "commandID": ".audio.set",
+      "names": ["set-hell", "sh"],
+      "description": "Set's the song to play in the guilds designated \"Hell\" channel.",
+      "extraInfo": "This command MUST be used in a guild's text channel. Usage: \"set-hell <song-name>\", where <song-name> is the name of the song to play in the voice channel.",
+      "visible": true
+    },
+    {
+      "commandID": ".audio.play_with",
+      "names": ["take-me-to-hell", "take-me", "tmth"],
+      "description": "Moves you to the guilds designated \"Hell\" channel with Teeto.",
+      "extraInfo": "This command MUST be used in a guild's text channel while you are also in a voice channel in the guild.",
+      "visible": true
+    },
+    {
+      "commandID": ".audio.set_channel",
+      "names": ["set-hell-channel", "set-channel", "sc"],
+      "description": "Set's the song to play in the guilds designated \"Hell\" channel.",
+      "extraInfo": "This command MUST be used in a guild's text channel. Usage: \"set-hell-channel <channel-name>\", where <channel-name> is the name of the voice channel to designate as the \"Hell\" channel.",
+      "visible": true
     }
   ]
 }

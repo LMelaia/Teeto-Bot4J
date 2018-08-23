@@ -8,7 +8,7 @@ import net.dv8tion.jda.core.entities.Game;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.events.*;
 import net.dv8tion.jda.core.hooks.EventListener;
-import net.lmelaia.teeto.Audio.AudioManager;
+import net.lmelaia.teeto.audio.AudioManager;
 import net.lmelaia.teeto.command.CommandManager;
 import net.lmelaia.teeto.messaging.Responses;
 import net.lmelaia.teeto.util.FileUtil;

@@ -172,7 +172,12 @@ public final class CommandManager {
 
         Object result;
 
-        LOG.info("Invoking command: " + commandMethod.toString());
+        LOG.info("Invoking command: "
+                + commandMethod.getDeclaringClass().getSimpleName()
+                + "."
+                + commandMethod.getName()
+                + "() -> "
+                + commandMethod.toString());
         try {
             result = commandMethod.invoke(null, parametersToGive);
         } catch (IllegalAccessException | InvocationTargetException e) {
@@ -180,8 +185,9 @@ public final class CommandManager {
             return false;
         }
 
-        if(result instanceof String && messageChannel != null)
+        if(result instanceof String && messageChannel != null){
             messageChannel.sendMessage((String)result).queue();
+        }
 
         return result;
     }
