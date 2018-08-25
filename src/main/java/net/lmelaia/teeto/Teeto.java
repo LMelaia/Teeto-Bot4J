@@ -104,13 +104,8 @@ public class Teeto {
         }
 
         AudioManager.init();
-        LOG.info("Got here");
         CommandManager.init(javaDiscordAPI, teetoConfig.getCommandPrefixes());
-        LOG.info("Got here");
         BotMessageManager.init(javaDiscordAPI);
-        LOG.info("Got here");
-
-        LOG.info("Got here");
     }
 
     /**
