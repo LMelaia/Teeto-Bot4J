@@ -1,6 +1,6 @@
 {
   "name": "Teeto",
-  "version": "2.0-Alpha",
+  "version": "2.0-Beta",
   "commandPrefixes": ["teeto plz", "teeto please", "-"],
   "helpCommand": "-help"
 }

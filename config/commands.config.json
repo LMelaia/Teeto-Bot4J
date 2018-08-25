@@ -16,21 +16,21 @@
     },
     {
       "commandID": ".help.information",
-      "names": ["information", "info", "inf", "show-me-your-secrets"],
+      "names": ["information"],
       "description": "Displays statistics about me. :wink:",
       "extraInfo": null,
       "visible": false
     },
     {
       "commandID": ".system.shutdown",
-      "names": ["shutdown", "drop-dead", "s"],
+      "names": ["-shutdown", "-drop-dead"],
       "description": "Terminates the bot and bot application.",
       "extraInfo": null,
       "visible": false
     },
     {
       "commandID": ".system.reboot",
-      "names": ["reboot", "reboot-yourself", "r"],
+      "names": ["-reboot", "-reboot-yourself"],
       "description": "Restarts the bot and bot application.",
       "extraInfo": null,
       "visible": false

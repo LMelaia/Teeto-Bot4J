@@ -111,7 +111,7 @@ public final class HelpCommands {
      */
     @CommandHandler(".help.list-commands")
     public static void listCommands(String[] args, MessageChannel channel){
-        if(args.length == 2 && args[1].equals("-unlisted")){
+        if(args.length == 2 && args[1].equals("--unlisted")){
             for(String command : getCommandList(true, true))
                 channel.sendMessage(command).queue();
         }
