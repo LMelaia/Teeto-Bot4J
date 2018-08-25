@@ -124,6 +124,7 @@ public final class CommandManager {
             LOG.error("Command listener method: " + mCommand.toString()
                     + " is not static and will NOT be executed.");
             channel.sendMessage(Teeto.getTeeto().getResponses().getResponse("cmd.error").get()).queue();
+            return;
         }
 
         if(invokeCommand(mCommand, channel, author, guild, command.split(" ")) == Boolean.FALSE)
@@ -144,11 +145,6 @@ public final class CommandManager {
      */
     private @Nullable Object invokeCommand(Method commandMethod, @Nullable MessageChannel messageChannel,
                                            @Nullable User author, @Nullable Guild guild, @Nullable String[] args){
-        if(!Modifier.isStatic(commandMethod.getModifiers())){
-            LOG.error("Command listener method: " + commandMethod.toString()
-                    + " is not static and will NOT be executed.");
-        }
-
         Class<?>[] parameters = commandMethod.getParameterTypes();
         Object[] parametersToGive = new Object[parameters.length];
 
@@ -180,7 +176,7 @@ public final class CommandManager {
                 + commandMethod.toString());
         try {
             result = commandMethod.invoke(null, parametersToGive);
-        } catch (IllegalAccessException | InvocationTargetException e) {
+        } catch (Exception e) {
             LOG.error("Failed to invoke command method: " + commandMethod.toString(), e);
             return false;
         }

@@ -73,4 +73,11 @@ public final class Constants {
     public static File getAudioFolder(){
         return new File(Teeto.getRunDirectory() + "/audio/");
     }
+
+    /**
+     * @return the folder where guild settings are kept.
+     */
+    public static File getSettingsFolder(){
+        return new File(Teeto.getAbsoluteRunDirectory() + "/guild_settings/");
+    }
 }

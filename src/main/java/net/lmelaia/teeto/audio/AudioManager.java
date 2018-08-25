@@ -89,6 +89,14 @@ public class AudioManager {
         return getGuildAudioPlayer(guild);
     }
 
+    public AudioFile[] getAudioFiles(){
+        return audioFileMap.getAudioFiles();
+    }
+
+    public boolean hasAudioFile(String name){
+        return audioFileMap.has(name);
+    }
+
     /**
      * Initializes the singleton audio manager. Does
      * nothing if already initialized.

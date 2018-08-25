@@ -58,7 +58,7 @@
     },
     {
       "commandID": ".audio.set",
-      "names": ["set-hell", "sh"],
+      "names": ["set-audio", "seta", "sa"],
       "description": "Set's the song to play in the guilds designated \"Hell\" channel.",
       "extraInfo": "This command MUST be used in a guild's text channel. Usage: \"set-hell <song-name>\", where <song-name> is the name of the song to play in the voice channel.",
       "visible": true
@@ -72,7 +72,7 @@
     },
     {
       "commandID": ".audio.set_channel",
-      "names": ["set-hell-channel", "set-channel", "sc"],
+      "names": ["set-channel", "setc", "sc"],
       "description": "Set's the song to play in the guilds designated \"Hell\" channel.",
       "extraInfo": "This command MUST be used in a guild's text channel. Usage: \"set-hell-channel <channel-name>\", where <channel-name> is the name of the voice channel to designate as the \"Hell\" channel.",
       "visible": true

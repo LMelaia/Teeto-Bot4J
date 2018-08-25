@@ -226,6 +226,15 @@ public class Teeto {
     }
 
     /**
+     * @return the runtime directory without modification.
+     * This guaranteed to be the directory the application
+     * is running from.
+     */
+    static File getAbsoluteRunDirectory(){
+        return new File(System.getProperty("user.dir"));
+    }
+
+    /**
      * @return {@code true} if the application
      * is running on windows.
      */

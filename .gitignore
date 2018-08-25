@@ -9,10 +9,13 @@
 *.log
 
 
-# Token file
+# Token file. Contains sensitive information
 /.TOKEN
 *.TOKEN
 
 # Audio files
 /audio/
 *.mp3
+
+# Runtime created folder that stores sensitive guild information. Only in test environment hopefully...
+/guild_settings/

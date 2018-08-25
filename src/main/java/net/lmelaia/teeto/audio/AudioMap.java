@@ -80,6 +80,14 @@ class AudioMap {
         return getAudioFileFromID(getIDFromName(name));
     }
 
+    public AudioFile[] getAudioFiles(){
+        return this.idAudioFileMap.values().toArray(new AudioFile[0]);
+    }
+
+    public boolean has(String name){
+        return this.nameIDMap.containsKey(name);
+    }
+
     /**
      * Loads the audio config settings from file
      * and gets all audio files.

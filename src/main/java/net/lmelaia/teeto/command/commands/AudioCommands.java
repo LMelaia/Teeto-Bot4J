@@ -1,5 +1,6 @@
 package net.lmelaia.teeto.command.commands;
 
+import com.google.gson.JsonPrimitive;
 import com.sedmelluq.discord.lavaplayer.player.event.AudioEventAdapter;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackEndReason;
@@ -7,6 +8,7 @@ import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.entities.VoiceChannel;
 import net.dv8tion.jda.core.managers.GuildController;
+import net.lmelaia.teeto.GuildSettings;
 import net.lmelaia.teeto.LogManager;
 import net.lmelaia.teeto.Teeto;
 import net.lmelaia.teeto.audio.AudioFile;
@@ -33,11 +35,6 @@ public final class AudioCommands {
     private static final AudioManager AUDIO_MANAGER = AudioManager.getAudioManager();
 
     /**
-     * The audio file we will play.
-     */
-    private static final AudioFile AUDIO_FILE = AudioManager.getAudioManager().getAudioFileFromName("nyan");
-
-    /**
      * The applications responses object
      */
     private static final Responses RESPONSES = Teeto.getTeeto().getResponses();
@@ -54,6 +51,7 @@ public final class AudioCommands {
      */
     @CommandHandler(".audio.disconnect")
     public static String disconnect(Guild g){
+        try{g = getIfNotNull(g);} catch (NullPointerException e){return e.getMessage();}
         AudioPlayer guildPlayer = AUDIO_MANAGER.getAudioPlayer(g);
 
         if(!guildPlayer.isConnected()){
@@ -76,6 +74,7 @@ public final class AudioCommands {
      */
     @CommandHandler(".audio.reset")
     public static String reset(Guild g){
+        try{g = getIfNotNull(g);} catch (NullPointerException e){return e.getMessage();}
         AudioPlayer guildPlayer = AUDIO_MANAGER.getAudioPlayer(g);
         guildPlayer.stop();
         guildPlayer.disconnectFromVoice();
@@ -102,7 +101,8 @@ public final class AudioCommands {
      * @return the response to the user.
      */
     @CommandHandler(".audio.play")
-    public static String play(Guild g){
+    public static String play(final Guild g){
+        try{getIfNotNull(g);} catch (NullPointerException e){return e.getMessage();}
         AudioPlayer guildPlayer = AUDIO_MANAGER.getAudioPlayer(g);
 
         VoiceChannel channel = getDesignatedHellChannel(g);
@@ -116,7 +116,7 @@ public final class AudioCommands {
             @Override
             public void onTrackEnd(com.sedmelluq.discord.lavaplayer.player.AudioPlayer player, AudioTrack track, AudioTrackEndReason endReason){
                 if(endReason.mayStartNext)
-                    guildPlayer.play(AUDIO_FILE.getAudioFile().getAbsolutePath());
+                    guildPlayer.play(getAudioFile(g).getAudioFile().getAbsolutePath());
             }
 
             @Override
@@ -125,7 +125,7 @@ public final class AudioCommands {
             }
         });
 
-        guildPlayer.play(AUDIO_FILE.getAudioFile().getAbsolutePath());
+        guildPlayer.play(getAudioFile(g).getAudioFile().getAbsolutePath());
 
         return RESPONSES.getResponse("audio.joined")
                 .setPlaceholder("{@channel}", channel.getName())
@@ -141,7 +141,24 @@ public final class AudioCommands {
      */
     @CommandHandler(".audio.set")
     public static String set(Guild g, String[] args){
-        return Teeto.getTeeto().getResponses().getResponse("cmd.not_implemented").get();
+        try{g = getIfNotNull(g);} catch (NullPointerException e){return e.getMessage();}
+
+        if(args.length != 2)
+            return Teeto.getTeeto().getResponses().getResponse("cmd.arg_length_error")
+                    .setPlaceholder("{@command}", "set-channel")
+                    .setPlaceholder("{@argLength}", String.valueOf(args.length - 1))
+                    .get();
+
+        String audioFileName = args[1];
+
+        if(AudioManager.getAudioManager().hasAudioFile(audioFileName)){
+            GuildSettings gs = GuildSettings.getGuildSettings(g);
+            gs.setSetting(GuildSettings.Settings.HELL_SONG, new JsonPrimitive("audioFileName"));
+            return (gs.save()) ? Teeto.getTeeto().getResponses().getResponse("settings.saved").get()
+                    : Teeto.getTeeto().getResponses().getResponse("settings.not_saved").get();
+        }
+
+        return Teeto.getTeeto().getResponses().getResponse("audio.song_not_found").get();
     }
 
     /**
@@ -156,6 +173,7 @@ public final class AudioCommands {
     @SuppressWarnings("ConstantConditions")
     @CommandHandler(".audio.play_with")
     public static String playWith(Guild g, User author){
+        try{g = getIfNotNull(g);} catch (NullPointerException e){return e.getMessage();}
         AudioPlayer guildPlayer = AUDIO_MANAGER.getAudioPlayer(g);
         GuildController controller = new GuildController(g);
 
@@ -185,7 +203,29 @@ public final class AudioCommands {
      */
     @CommandHandler(".audio.set_channel")
     public static String setChannel(Guild g, String[] args){
-        return Teeto.getTeeto().getResponses().getResponse("cmd.not_implemented").get();
+        try{g = getIfNotNull(g);} catch (NullPointerException e){return e.getMessage();}
+
+        if(args.length != 2)
+            return Teeto.getTeeto().getResponses().getResponse("cmd.arg_length_error")
+                    .setPlaceholder("{@command}", "set-channel")
+                    .setPlaceholder("{@argLength}", String.valueOf(args.length - 1))
+                    .get();
+
+        String channelName = args[1];
+        VoiceChannel channel = null;
+
+        for(VoiceChannel vc : Teeto.getTeeto().getJavaDiscordAPI().getVoiceChannels())
+            if(vc.getName().toLowerCase().equals(channelName.toLowerCase()))
+                channel = vc;
+
+        if(channel == null)
+            return Teeto.getTeeto().getResponses().getResponse("audio.channel_not_found")
+                    .setPlaceholder("{@channel}", channelName).get();
+
+        GuildSettings settings = GuildSettings.getGuildSettings(g);
+        settings.setSetting(GuildSettings.Settings.HELL_CHANNEL, new JsonPrimitive(channelName));
+        return (settings.save()) ? Teeto.getTeeto().getResponses().getResponse("settings.saved").get()
+                : Teeto.getTeeto().getResponses().getResponse("settings.not_saved").get();
     }
 
     /**
@@ -193,10 +233,44 @@ public final class AudioCommands {
      * @return the guilds designated hell channel.
      */
     private static VoiceChannel getDesignatedHellChannel(Guild g){
+        GuildSettings settings = GuildSettings.getGuildSettings(g);
+
+        if(!settings.has(GuildSettings.Settings.HELL_CHANNEL)){
+            return null;
+        }
+
+        String channelName = settings.getSetting(GuildSettings.Settings.HELL_CHANNEL).getAsString();
+
         for(VoiceChannel channel : g.getVoiceChannels())
-            if(channel.getName().equals("Hell"))
+            if(channel.getName().toLowerCase().equals(channelName.toLowerCase()))
                 return channel;
 
         return null;
+    }
+
+    /**
+     * @param g the guild.
+     * @return the audio file to use for this guild.
+     */
+    private static AudioFile getAudioFile(Guild g){
+        AudioFile ret = AudioManager.getAudioManager().getAudioFileFromName("nyan");
+
+        if(!GuildSettings.getGuildSettings(g).has(GuildSettings.Settings.HELL_SONG))
+            return ret;
+        else
+            return AudioManager.getAudioManager().getAudioFileFromName(GuildSettings.getGuildSettings(g).getSetting(GuildSettings.Settings.HELL_SONG).getAsString());
+    }
+
+    /**
+     * Throws a null pointer if the passed guild parameter
+     * is null.
+     * @param g the guild.
+     * @return the guild (g).
+     */
+    private static Guild getIfNotNull(Guild g){
+        if(g == null)
+            throw new NullPointerException(
+                    Teeto.getTeeto().getResponses().getResponse("cmd.not_in_guild").get());
+        return g;
     }
 }
