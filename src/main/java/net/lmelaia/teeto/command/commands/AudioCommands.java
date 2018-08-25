@@ -133,7 +133,7 @@ public final class AudioCommands {
     }
 
     /**
-     * Not yet implemented.
+     * Sets the song to play in the designated voice channel.
      *
      * @param g the guild we are acting on.
      * @param args the command arguments.
@@ -153,7 +153,10 @@ public final class AudioCommands {
 
         if(AudioManager.getAudioManager().hasAudioFile(audioFileName)){
             GuildSettings gs = GuildSettings.getGuildSettings(g);
-            gs.setSetting(GuildSettings.Settings.HELL_SONG, new JsonPrimitive("audioFileName"));
+            gs.setSetting(GuildSettings.Settings.HELL_SONG, new JsonPrimitive(audioFileName));
+
+            CommandManager.getInstance().invokeCommand(".audio.play", g);
+
             return (gs.save()) ? Teeto.getTeeto().getResponses().getResponse("settings.saved").get()
                     : Teeto.getTeeto().getResponses().getResponse("settings.not_saved").get();
         }
@@ -195,7 +198,7 @@ public final class AudioCommands {
     }
 
     /**
-     * Not yet implemented
+     * Sets the channel in which to play audio.
      *
      * @param g the guild we are acting on.
      * @param args the command arguments.
@@ -258,7 +261,8 @@ public final class AudioCommands {
         if(!GuildSettings.getGuildSettings(g).has(GuildSettings.Settings.HELL_SONG))
             return ret;
         else
-            return AudioManager.getAudioManager().getAudioFileFromName(GuildSettings.getGuildSettings(g).getSetting(GuildSettings.Settings.HELL_SONG).getAsString());
+            return AudioManager.getAudioManager().getAudioFileFromName(GuildSettings.getGuildSettings(g)
+                    .getSetting(GuildSettings.Settings.HELL_SONG).getAsString());
     }
 
     /**

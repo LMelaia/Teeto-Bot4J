@@ -4,7 +4,13 @@
       "id": ".nyan_cat",
       "names": ["nyan", "nyan-cat"],
       "displayName": "Nyan Cat",
-      "fileName": "nyan_cat_original.mp3"
+      "fileName": "nyan.aud"
+    },
+    {
+      "id": ".fox_say",
+      "names": ["fox", "fox-say"],
+      "displayName": "What Does The Fox Say",
+      "fileName": "fox.aud"
     }
   ]
 }

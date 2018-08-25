@@ -59,7 +59,7 @@
     {
       "commandID": ".audio.set",
       "names": ["set-audio", "seta", "sa"],
-      "description": "Set's the song to play in the guilds designated \"Hell\" channel.",
+      "description": "Sets the song to play in the guilds designated \"Hell\" channel.",
       "extraInfo": "This command MUST be used in a guild's text channel. Usage: \"set-hell <song-name>\", where <song-name> is the name of the song to play in the voice channel.",
       "visible": true
     },
@@ -73,8 +73,22 @@
     {
       "commandID": ".audio.set_channel",
       "names": ["set-channel", "setc", "sc"],
-      "description": "Set's the song to play in the guilds designated \"Hell\" channel.",
-      "extraInfo": "This command MUST be used in a guild's text channel. Usage: \"set-hell-channel <channel-name>\", where <channel-name> is the name of the voice channel to designate as the \"Hell\" channel.",
+      "description": "Sets the song to play in the guilds designated \"Hell\" channel.",
+      "extraInfo": "This command MUST be used in a guild's text channel. Usage: \"set-channel <channel-name>\", where <channel-name> is the name of the voice channel to designate as the \"Hell\" channel.",
+      "visible": true
+    },
+    {
+      "commandID": ".bmanage.set_bot_channel",
+      "names": ["set-bot-channel", "setbc", "sbc"],
+      "description": "Sets the message channel to send all bot message and bot commands to.",
+      "extraInfo": "This command MUST be used in a guild's text channel. Usage: \"set-bot-channel <channel-name>\", where <channel-name> is the name of the message channel to to send bot related message to.",
+      "visible": true
+    },
+    {
+      "commandID": ".bmanage.add_prefix",
+      "names": ["add-bot-command-prefix", "add-prefix", "addp"],
+      "description": "Adds a prefix to the list that singles a bot command. If a message with this prefix is received, it will be moved to the bot channel if set.",
+      "extraInfo": "This command MUST be used in a guild's text channel. Usage: \"add-bot-command-prefix <prefix>\", where <prefix> is the command prefix for a bot.",
       "visible": true
     }
   ]

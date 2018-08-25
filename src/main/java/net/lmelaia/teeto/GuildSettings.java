@@ -80,7 +80,7 @@ public class GuildSettings {
      * @param s the setting to set.
      * @param value the value to set.
      */
-    public void setSetting(Setting s, JsonPrimitive value){
+    public void setSetting(Setting s, JsonElement value){
         backingObject.add(s.getProperty(), value);
     }
 
@@ -231,7 +231,17 @@ public class GuildSettings {
         /**
          * The song to play in the specified channel.
          */
-        HELL_SONG("song");
+        HELL_SONG("song"),
+
+        /**
+         * The channel bot message should be moved/sent to.
+         */
+        BOT_CHANNEL("bchannel"),
+
+        /**
+         * List of command prefixes for bots in the guild.
+         */
+        BOT_COMMANDS("bcommands");
 
         /**
          * String used as the property for the value in the backing json object.
