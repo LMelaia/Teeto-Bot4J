@@ -1,4 +1,4 @@
-package net.lmelaia.teeto.audio;
+package net.lmelaia.teeto.aud;
 
 import java.io.File;
 
@@ -22,6 +22,7 @@ public final class AudioFile {
      * The audio file itself.
      */
     private final File audioFile;
+
 
     /**
      * Constructs a new audio file.

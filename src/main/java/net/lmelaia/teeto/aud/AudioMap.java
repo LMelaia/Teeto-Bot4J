@@ -1,4 +1,4 @@
-package net.lmelaia.teeto.audio;
+package net.lmelaia.teeto.aud;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;

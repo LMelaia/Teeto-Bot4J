@@ -8,7 +8,7 @@ import net.dv8tion.jda.core.entities.Game;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.events.*;
 import net.dv8tion.jda.core.hooks.EventListener;
-import net.lmelaia.teeto.audio.AudioManager;
+import net.lmelaia.teeto.aud.AudioManager;
 import net.lmelaia.teeto.command.CommandManager;
 import net.lmelaia.teeto.messaging.BotMessageManager;
 import net.lmelaia.teeto.messaging.Responses;
@@ -104,8 +104,13 @@ public class Teeto {
         }
 
         AudioManager.init();
+        LOG.info("Got here");
         CommandManager.init(javaDiscordAPI, teetoConfig.getCommandPrefixes());
+        LOG.info("Got here");
         BotMessageManager.init(javaDiscordAPI);
+        LOG.info("Got here");
+
+        LOG.info("Got here");
     }
 
     /**
