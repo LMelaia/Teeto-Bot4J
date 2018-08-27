@@ -196,6 +196,8 @@ public class AudioPlayer {
         return new JDAAudioSendHandler(internalPlayer);
     }
 
+    private int plays = 0;
+
     /**
      * Loads and plays the given audio file.
      *
@@ -206,7 +208,12 @@ public class AudioPlayer {
         audioPlayerManager.loadItemOrdered(this, identifier, new AudioLoadResultHandler() {
             @Override
             public void trackLoaded(AudioTrack track) {
-                LOG.info("Playing audio track: " + track.getIdentifier());
+                LOG.debug("Playing audio track: " + track.getIdentifier());
+                if(plays > 99){
+                    LOG.info("100 Plays on audio track: " + track.getIdentifier());
+                    plays = 0;
+                }
+                plays++;
                 internalPlay(track);
             }
 
