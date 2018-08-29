@@ -10,7 +10,7 @@ import net.dv8tion.jda.core.events.*;
 import net.dv8tion.jda.core.hooks.EventListener;
 import net.lmelaia.teeto.aud.AudioManager;
 import net.lmelaia.teeto.command.CommandManager;
-import net.lmelaia.teeto.messaging.BotMessageManager;
+import net.lmelaia.teeto.messaging.BotMessageHandler;
 import net.lmelaia.teeto.messaging.Responses;
 import net.lmelaia.teeto.util.FileUtil;
 import org.apache.logging.log4j.Level;
@@ -105,7 +105,7 @@ public class Teeto {
 
         AudioManager.init();
         CommandManager.init(javaDiscordAPI, teetoConfig.getCommandPrefixes());
-        BotMessageManager.init(javaDiscordAPI);
+        BotMessageHandler.init(javaDiscordAPI);
     }
 
     /**
@@ -323,7 +323,7 @@ public class Teeto {
         }
 
         private void logStatusChangeEvent(StatusChangeEvent evt) {
-            LOG.info(String.format("Status changed from %s to %s",
+            LOG.debug(String.format("Status changed from %s to %s",
                     evt.getOldStatus().name(), evt.getNewStatus().name()));
         }
 

@@ -1,25 +1,23 @@
 package net.lmelaia.teeto.messaging;
 
+import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.MessageBuilder;
-import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.MessageChannel;
-import net.dv8tion.jda.core.entities.User;
+import net.dv8tion.jda.core.entities.*;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 import net.lmelaia.teeto.GuildSettings;
 import net.lmelaia.teeto.LogManager;
+import net.lmelaia.teeto.Teeto;
 import net.lmelaia.teeto.util.JsonUtil;
-import net.lmelaia.teeto.util.MessageUtil;
 import org.apache.logging.log4j.Logger;
 
 /**
  * Handles message sent by bots and people issuing
  * commands to bots and moves them to the appropriate
- * channel.
+ * channel if set.
  */
-public class BotMessageManager {
+public class BotMessageHandler {
 
     /**
      * Logger for this class.
@@ -29,7 +27,7 @@ public class BotMessageManager {
     /**
      * Singleton instance.
      */
-    private static BotMessageManager instance;
+    private static BotMessageHandler instance;
 
     /**
      * Initializes the bot message manager.
@@ -38,14 +36,14 @@ public class BotMessageManager {
      */
     public static void init(JDA jda){
         if(instance == null)
-            instance = new BotMessageManager(jda);
+            instance = new BotMessageHandler(jda);
     }
 
     /**
      * @return the bot message manager is initialized, otherwise
      * null.
      */
-    public static BotMessageManager get(){
+    public static BotMessageHandler get(){
         return instance;
     }
 
@@ -54,7 +52,7 @@ public class BotMessageManager {
      *
      * @param jda the java discord api.
      */
-    private BotMessageManager(JDA jda){
+    private BotMessageHandler(JDA jda){
         jda.addEventListener(new BotMessageListener());
     }
 
@@ -96,7 +94,7 @@ public class BotMessageManager {
             if(author.isBot()){
                 Message botMessageQuote = new MessageBuilder()
                         .append("")
-                        .setEmbed(MessageUtil.quote(author, event.getMessage().getContentRaw())).build();
+                        .setEmbed(quoteBot(author, event.getMessage().getContentRaw())).build();
                 event.getMessage().delete().submit();
                 botMsgChannel.sendMessage(botMessageQuote).queue();//Move message to bot channel.
                 return;//We're done
@@ -110,12 +108,54 @@ public class BotMessageManager {
                 if(event.getMessage().getContentRaw().toLowerCase().startsWith(cmd.toLowerCase())){
                     Message botMessageQuote = new MessageBuilder()
                             .append("")
-                            .setEmbed(MessageUtil.quote(author, event.getMessage().getContentRaw())).build();
+                            .setEmbed(quoteUser(author, event.getMessage().getContentRaw())).build();
                     event.getMessage().delete().submit();
                     botMsgChannel.sendMessage(botMessageQuote).queue();//Move message to bot channel.
                     return;//We're done
                 }
             }
         }
+    }
+
+    /**
+     * Creates a message embed quoting a user issuing a bot command.
+     *
+     * @param author the user who we're quoting.
+     * @param quote the text to quote.
+     * @return the created message embed.
+     */
+    private static MessageEmbed quoteUser(User author, String quote){
+        return new EmbedBuilder()
+                .setAuthor(author.getName())
+                .setDescription(quote)
+                .setFooter(
+                        Teeto.getTeeto().getResponses().getResponse("msg.user_quote_footer")
+                            .setPlaceholder("{@user}",
+                                author.getName() + "#" + author.getDiscriminator())
+                            .get(),
+                        author.getEffectiveAvatarUrl()
+                )
+                .build();
+    }
+
+    /**
+     * Creates a message embed quoting a message from a bot.
+     *
+     * @param author the bot that we're quoting.
+     * @param quote the text to quote.
+     * @return the created message embed.
+     */
+    private static MessageEmbed quoteBot(User author, String quote){
+        return new EmbedBuilder()
+                .setAuthor(author.getName())
+                .setDescription(quote)
+                .setFooter(
+                        Teeto.getTeeto().getResponses().getResponse("msg.bot_quote_footer")
+                                .setPlaceholder("{@bot}",
+                                        author.getName() + "#" + author.getDiscriminator())
+                                .get(),
+                        author.getEffectiveAvatarUrl()
+                )
+                .build();
     }
 }
