@@ -15,7 +15,6 @@ import net.lmelaia.teeto.aud.AudioFile;
 import net.lmelaia.teeto.aud.AudioManager;
 import net.lmelaia.teeto.aud.AudioPlayer;
 import net.lmelaia.teeto.command.CommandHandler;
-import net.lmelaia.teeto.command.CommandManager;
 import net.lmelaia.teeto.messaging.Responses;
 import org.apache.logging.log4j.Logger;
 
@@ -32,7 +31,7 @@ public final class AudioCommands {
     /**
      * The applications audio manager.
      */
-    private static final AudioManager AUDIO_MANAGER = AudioManager.getAudioManager();
+    private static final AudioManager AUDIO_MANAGER = Teeto.getTeeto().getAudioManager();
 
     /**
      * The applications responses object
@@ -151,11 +150,11 @@ public final class AudioCommands {
 
         String audioFileName = args[1];
 
-        if(AudioManager.getAudioManager().hasAudioFile(audioFileName)){
+        if(Teeto.getTeeto().getAudioManager().hasAudioFile(audioFileName)){
             GuildSettings gs = GuildSettings.getGuildSettings(g);
             gs.setSetting(GuildSettings.Settings.HELL_SONG, new JsonPrimitive(audioFileName));
 
-            CommandManager.getInstance().invokeCommand(".audio.play", g);
+            Teeto.getTeeto().getCommandManager().invokeCommand(".audio.play", g);
 
             return (gs.save()) ? Teeto.getTeeto().getResponses().getResponse("settings.saved").get()
                     : Teeto.getTeeto().getResponses().getResponse("settings.not_saved").get();
@@ -192,7 +191,7 @@ public final class AudioCommands {
                     .get();
         }
 
-        CommandManager.getInstance().invokeCommand(".audio.play", g);
+        Teeto.getTeeto().getCommandManager().invokeCommand(".audio.play", g);
 
         return RESPONSES.getResponse("audio.enjoy").get();
     }
@@ -256,12 +255,12 @@ public final class AudioCommands {
      * @return the audio file to use for this guild.
      */
     private static AudioFile getAudioFile(Guild g){
-        AudioFile ret = AudioManager.getAudioManager().getAudioFileFromName("nyan");
+        AudioFile ret = Teeto.getTeeto().getAudioManager().getAudioFileFromName("nyan");
 
         if(!GuildSettings.getGuildSettings(g).has(GuildSettings.Settings.HELL_SONG))
             return ret;
         else
-            return AudioManager.getAudioManager().getAudioFileFromName(GuildSettings.getGuildSettings(g)
+            return Teeto.getTeeto().getAudioManager().getAudioFileFromName(GuildSettings.getGuildSettings(g)
                     .getSetting(GuildSettings.Settings.HELL_SONG).getAsString());
     }
 

@@ -63,6 +63,16 @@ public class Teeto {
     private final Responses responses;
 
     /**
+     * The command manager instance for the application.
+     */
+    private final CommandManager commandManager;
+
+    /**
+     * The audio manager instance for the application.
+     */
+    private final AudioManager audioManager;
+
+    /**
      * Configuration options for the bot. File: config/teeto.json
      */
     private TeetoConfig teetoConfig = TeetoConfig.getConfig();
@@ -103,8 +113,8 @@ public class Teeto {
             throw e;
         }
 
-        AudioManager.init();
-        CommandManager.init(javaDiscordAPI, teetoConfig.getCommandPrefixes());
+        this.audioManager = AudioManager.init();
+        this.commandManager = CommandManager.init(javaDiscordAPI, teetoConfig.getCommandPrefixes());
         BotMessageHandler.init(javaDiscordAPI);
     }
 
@@ -131,10 +141,24 @@ public class Teeto {
         return this.responses;
     }
 
+    /**
+     * @return The command manager instance for the application.
+     */
+    public CommandManager getCommandManager(){
+        return this.commandManager;
+    }
+
+    /**
+     * @return The audio manager instance for the application.
+     */
+    public AudioManager getAudioManager(){
+        return this.audioManager;
+    }
+
     private void disconnectAllBotsFromVoice(){
         LOG.info("Disconnecting all bots.");
         for(Guild g : javaDiscordAPI.getGuilds()){
-            AudioManager.getAudioManager().getAudioPlayer(g).disconnectFromVoice();
+            Teeto.getTeeto().getAudioManager().getAudioPlayer(g).disconnectFromVoice();
             LOG.info("Disconnected bot from guild: " + g.getName());
         }
     }

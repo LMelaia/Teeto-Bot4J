@@ -6,7 +6,6 @@ import net.lmelaia.teeto.LogManager;
 import net.lmelaia.teeto.Teeto;
 import net.lmelaia.teeto.command.CommandHandler;
 import net.lmelaia.teeto.command.CommandInfo;
-import net.lmelaia.teeto.command.CommandManager;
 import net.lmelaia.teeto.util.TemplateBuilder;
 import org.apache.logging.log4j.Logger;
 
@@ -87,7 +86,7 @@ public final class HelpCommands {
                     .get()
             ).queue();
         } else {
-            if(CommandManager.getInstance().getCommandIDFromName(args[1]) == null) {
+            if(Teeto.getTeeto().getCommandManager().getCommandIDFromName(args[1]) == null) {
                 channel.sendMessage(
                         Teeto.getTeeto().getResponses().getResponse("cmd.not_found")
                         .setPlaceholder("{@command}", args[1]).get()
@@ -96,7 +95,7 @@ public final class HelpCommands {
             }
 
             channel.sendMessage(getCommandInfo(true,
-                    CommandManager.getInstance().getCommandInfoFromID(CommandManager.getInstance()
+                    Teeto.getTeeto().getCommandManager().getCommandInfoFromID(Teeto.getTeeto().getCommandManager()
                             .getCommandIDFromName(args[1])))).queue();
 
         }
@@ -156,7 +155,7 @@ public final class HelpCommands {
     private static String[] getCommandList(boolean detailed, boolean showUnlisted){
         List<String> commands = new ArrayList<>();
 
-        for(CommandInfo commandInfo : CommandManager.getInstance().getAllCommandInfoObjects()){
+        for(CommandInfo commandInfo : Teeto.getTeeto().getCommandManager().getAllCommandInfoObjects()){
             if(!commandInfo.isVisible() && !showUnlisted)
                 continue;
             commands.add(getCommandInfo(detailed, commandInfo) + "\n.\n");

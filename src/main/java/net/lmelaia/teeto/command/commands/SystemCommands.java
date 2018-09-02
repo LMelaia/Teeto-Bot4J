@@ -1,5 +1,6 @@
 package net.lmelaia.teeto.command.commands;
 
+import net.dv8tion.jda.core.entities.Game;
 import net.dv8tion.jda.core.entities.MessageChannel;
 import net.lmelaia.teeto.LogManager;
 import net.lmelaia.teeto.Teeto;
@@ -71,13 +72,40 @@ public final class SystemCommands {
             return;
         }
 
-        try{
-            Desktop.getDesktop().open(runScript);
-            Teeto.shutdown();
-        } catch (IOException e){
-            LOG.error("Failed to reboot", e);
-            channel.sendMessage(Teeto.getTeeto().getResponses().getResponse("message.cant_reboot").get())
-                    .queue();
+        if(Teeto.isWindows()) {
+            try {
+                Desktop.getDesktop().open(runScript);
+                Teeto.shutdown();
+            } catch (IOException e) {
+                LOG.error("Failed to reboot", e);
+                channel.sendMessage(Teeto.getTeeto().getResponses().getResponse("message.cant_reboot").get())
+                        .queue();
+            }
+        } else if(Teeto.isUnix()){
+            try {
+                Process p = Runtime.getRuntime().exec(new String[]{"bash", "\"/" + runScript.getAbsolutePath() + "\""});
+            } catch (IOException e) {
+                LOG.error("Failed to reboot", e);
+                channel.sendMessage(Teeto.getTeeto().getResponses().getResponse("message.cant_reboot").get())
+                        .queue();
+            }
         }
+    }
+
+    /**
+     * Updates the bots Game presence.
+     *
+     * @return The response to the user.
+     */
+    @CommandHandler(".system.update_game")
+    public static String updateGame(){
+        Teeto.getTeeto().getJavaDiscordAPI().getPresence().setGame(Game.of(Game.GameType.DEFAULT,
+                Teeto.getTeeto().getTeetoConfig().getName()
+                        + " v"
+                        + Teeto.getTeeto().getTeetoConfig().getVersion()
+                        + " | "
+                        + Teeto.getTeeto().getTeetoConfig().getHelpCommand()));
+
+        return Teeto.getTeeto().getResponses().getResponse("system.updated").get();
     }
 }

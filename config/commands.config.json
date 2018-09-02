@@ -90,6 +90,13 @@
       "description": "Adds a prefix to the list that singles a bot command. If a message with this prefix is received, it will be moved to the bot channel if set.",
       "extraInfo": "This command MUST be used in a guild's text channel. Usage: \"add-bot-command-prefix <prefix>\", where <prefix> is the command prefix for a bot.",
       "visible": true
+    },
+    {
+      "commandID": ".system.update_game",
+      "names": ["-update-game", "-update-g"],
+      "description": "Updates the information displayed in the game Teeto is playing.",
+      "extraInfo": null,
+      "visible": false
     }
   ]
 }

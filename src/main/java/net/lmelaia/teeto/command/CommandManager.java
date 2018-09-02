@@ -15,7 +15,6 @@ import org.apache.logging.log4j.Logger;
 import javax.annotation.Nullable;
 import java.io.FileNotFoundException;
 import java.lang.annotation.ElementType;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 
@@ -196,7 +195,7 @@ public final class CommandManager {
         if(ID == null)
             return null;
 
-        for(Method methodX : getAllCommandHandler()){
+        for(Method methodX : getAllCommandHandlers()){
             if(ID.split(" ")[0].toLowerCase()
                     .equals(annotatedListeners.getAnnotationFromMethod(methodX).value()))
                 return methodX;
@@ -208,7 +207,7 @@ public final class CommandManager {
     /**
      * @return a list of all command handler methods.
      */
-    private Method[] getAllCommandHandler(){
+    private Method[] getAllCommandHandlers(){
         return annotatedListeners.getMethods();
     }
 
@@ -316,19 +315,14 @@ public final class CommandManager {
      * @throws IllegalStateException if the command manager has already been
      * initialized.
      */
-    public static void init(JDA jda, String[] commandPrefixes){
+    public static CommandManager init(JDA jda, String[] commandPrefixes){
         if(instance != null)
             throw new IllegalStateException("Instance already initialized");
 
         instance = new CommandManager(jda, commandPrefixes);
-    }
-
-    /**
-     * @return the singleton command manager instance.
-     */
-    public static CommandManager getInstance(){
         return instance;
     }
+
 
     /**
      * Message listener implementation designed to listen

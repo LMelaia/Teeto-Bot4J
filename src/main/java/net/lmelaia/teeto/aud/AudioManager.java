@@ -89,10 +89,18 @@ public class AudioManager {
         return getGuildAudioPlayer(guild);
     }
 
+    /**
+     * @return an array of the registered audio files.
+     */
     public AudioFile[] getAudioFiles(){
         return audioFileMap.getAudioFiles();
     }
 
+    /**
+     * @param name any one of the audio files names.
+     * @return {@code true} if the audio file with
+     * the given name exists.
+     */
     public boolean hasAudioFile(String name){
         return audioFileMap.has(name);
     }
@@ -101,18 +109,15 @@ public class AudioManager {
      * Initializes the singleton audio manager. Does
      * nothing if already initialized.
      */
-    public static void init(){
+    public static AudioManager init(){
         if(instance == null)
             instance = new AudioManager();
-    }
+        else
+            throw new IllegalStateException("Audio manager already initialized");
 
-    /**
-     * @return the singleton audio manager instance, if
-     * initialized, otherwise {@code null}
-     */
-    public static AudioManager getAudioManager(){
         return instance;
     }
+
 
     /**
      * Constructs or returns the audio player for the given guild.
