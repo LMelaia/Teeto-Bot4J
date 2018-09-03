@@ -305,6 +305,7 @@ public final class CommandManager {
      * @param guild the guild the command was requested from, if any.
      * @return the value returned from the command handler method.
      */
+    @SuppressWarnings("UnusedReturnValue")
     public Object invokeCommand(String ID, Guild guild){
         return invokeCommand(ID, null, null, null, guild);
     }

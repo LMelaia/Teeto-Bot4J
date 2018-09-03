@@ -168,7 +168,8 @@ public final class HelpCommands {
      * @param showUnlisted if true, shows invisible commands.
      * @return a styled discord string displaying all the commands.
      */
-    private static String[] getCommandList(boolean detailed, boolean showUnlisted){
+    private static String[] getCommandList(@SuppressWarnings("SameParameterValue") boolean detailed,
+                                           boolean showUnlisted){
         List<String> commands = new ArrayList<>();
 
         for(CommandInfo commandInfo : Teeto.getTeeto().getCommandManager().getAllCommandInfoObjects()){
