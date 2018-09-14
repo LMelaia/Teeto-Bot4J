@@ -80,7 +80,6 @@ public final class SystemCommands {
             return;
         }
 
-
         if(!runScript.exists()){
             LOG.warn("Run script: " + runScript + " does not exist. Development environment maybe?");
             channel.sendMessage(Teeto.getTeeto().getResponses().getResponse("system.cant_reboot").get())
@@ -99,7 +98,8 @@ public final class SystemCommands {
             }
         } else if(Teeto.isUnix()){
             try {
-                Process p = Runtime.getRuntime().exec(new String[]{"bash", "\"/" + runScript.getAbsolutePath() + "\""});
+                Process p = Runtime.getRuntime().exec(new String[]{"bash", "" + runScript.getAbsolutePath() + ""});
+                Teeto.shutdown();
             } catch (IOException e) {
                 LOG.error("Failed to reboot", e);
                 channel.sendMessage(Teeto.getTeeto().getResponses().getResponse("message.cant_reboot").get())

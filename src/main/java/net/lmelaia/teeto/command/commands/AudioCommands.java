@@ -34,6 +34,8 @@ import net.lmelaia.teeto.command.CommandHandler;
 import net.lmelaia.teeto.messaging.Responses;
 import org.apache.logging.log4j.Logger;
 
+import java.util.Arrays;
+
 /**
  * Commands related to audio.
  */
@@ -244,6 +246,26 @@ public final class AudioCommands {
         settings.setSetting(GuildSettings.Settings.HELL_CHANNEL, new JsonPrimitive(channelName));
         return (settings.save()) ? Teeto.getTeeto().getResponses().getResponse("settings.saved").get()
                 : Teeto.getTeeto().getResponses().getResponse("settings.not_saved").get();
+    }
+
+    /**
+     * Lists all audio files.
+     *
+     * @param g the guild the command was issued in.
+     * @return a list of all audio files.
+     */
+    @CommandHandler(".audio.list")
+    @SuppressWarnings("UnusedAssignment")
+    public static String listAudio(Guild g){
+        try{g = getIfNotNull(g);} catch (NullPointerException e){return e.getMessage();}
+
+        StringBuilder ret = new StringBuilder();
+
+        for(AudioFile f : Teeto.getTeeto().getAudioManager().getAudioFiles()){
+            ret.append(f.getDisplayName()).append(" ").append(Arrays.toString(f.getAliases())).append("\n");
+        }
+
+        return ret.toString();
     }
 
     /**

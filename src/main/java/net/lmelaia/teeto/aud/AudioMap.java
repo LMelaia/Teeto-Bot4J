@@ -100,6 +100,11 @@ class AudioMap {
         return this.idAudioFileMap.values().toArray(new AudioFile[0]);
     }
 
+    /**
+     * @param name name (alias) of an audio file.
+     * @return {@code true} if the audio resource with the
+     * given name exists.
+     */
     public boolean has(String name){
         return this.nameIDMap.containsKey(name);
     }
@@ -136,7 +141,8 @@ class AudioMap {
             AudioFile audioFile = new AudioFile(
                     element.get("id").getAsString(),
                     element.get("displayName").getAsString(),
-                    file
+                    file,
+                    JsonUtil.jsonArrayToStringArray(element.get("names").getAsJsonArray())
             );
 
             for (String name: JsonUtil.jsonArrayToStringArray(element.get("names").getAsJsonArray())) {

@@ -11,6 +11,24 @@
       "names": ["fox", "fox-say"],
       "displayName": "What Does The Fox Say",
       "fileName": "fox.aud"
+    },
+    {
+      "id": ".nayn_tac",
+      "names": ["nayn", "nayn-tac"],
+      "displayName": "Tac Nayn",
+      "fileName": "nayn.aud"
+    },
+    {
+      "id": ".sword",
+      "names": ["sword"],
+      "displayName": "I CAN SWING MY SWORD",
+      "fileName": "sword.aud"
+    },
+    {
+      "id": ".duel",
+      "names": ["duel"],
+      "displayName": "It's time to d-d-d-d-d-d duel",
+      "fileName": "duel.aud"
     }
   ]
 }

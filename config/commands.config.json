@@ -58,21 +58,28 @@
     },
     {
       "commandID": ".audio.set",
-      "names": ["set-audio", "set-a", "s-a"],
+      "names": ["set-audio", "set-a", "s-a", "seta"],
       "description": "Sets the song to play in the guilds designated \"Hell\" channel.",
       "extraInfo": "This command MUST be used in a guild's text channel. Usage: \"set-hell <song-name>\", where <song-name> is the name of the song to play in the voice channel.",
       "visible": true
     },
     {
+      "commandID": ".audio.list",
+      "names": ["list-audio", "list-a", "lista"],
+      "description": "Lists the audio files available to play.",
+      "extraInfo": "This command MUST be used in a guild's text channel.",
+      "visible": true
+    },
+    {
       "commandID": ".audio.play_with",
-      "names": ["take-me-to-hell", "take-me", "tmth"],
+      "names": ["take-me-to-hell", "takemetohell", "take-me", "tmth"],
       "description": "Moves you to the guilds designated \"Hell\" channel with Teeto.",
       "extraInfo": "This command MUST be used in a guild's text channel while you are also in a voice channel in the guild.",
       "visible": true
     },
     {
       "commandID": ".audio.set_channel",
-      "names": ["set-channel", "set-c", "s-c"],
+      "names": ["set-channel", "set-c", "s-c", "setc"],
       "description": "Sets the given voice channel as the designated \"Hell\" channel.",
       "extraInfo": "This command MUST be used in a guild's text channel. Usage: \"set-channel <channel-name>\", where <channel-name> is the name of the voice channel to designate as the \"Hell\" channel.",
       "visible": true

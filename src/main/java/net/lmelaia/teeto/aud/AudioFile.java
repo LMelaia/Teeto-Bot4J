@@ -39,6 +39,10 @@ public final class AudioFile {
      */
     private final File audioFile;
 
+    /**
+     * List of names that identify the song.
+     */
+    private final String[] aliases;
 
     /**
      * Constructs a new audio file.
@@ -47,10 +51,11 @@ public final class AudioFile {
      * @param displayName the display name (i.e. title)
      * @param audioFile the audio file itself.
      */
-    AudioFile(String id, String displayName, File audioFile){
+    AudioFile(String id, String displayName, File audioFile, String[] aliases){
         this.id = id;
         this.displayName = displayName;
         this.audioFile = audioFile;
+        this.aliases = aliases;
     }
 
     /**
@@ -72,5 +77,12 @@ public final class AudioFile {
      */
     public File getAudioFile() {
         return audioFile;
+    }
+
+    /**
+     * @return The list of names that identify the song.
+     */
+    public String[] getAliases(){
+        return this.aliases;
     }
 }
