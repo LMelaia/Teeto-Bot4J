@@ -243,7 +243,7 @@ public final class AudioCommands {
                     .setPlaceholder("{@channel}", channelName).get();
 
         GuildSettings settings = GuildSettings.getGuildSettings(g);
-        settings.setSetting(GuildSettings.Settings.HELL_CHANNEL, new JsonPrimitive(channelName));
+        settings.setSetting(GuildSettings.Settings.HELL_CHANNEL, new JsonPrimitive(channel.getIdLong()));
         return (settings.save()) ? Teeto.getTeeto().getResponses().getResponse("settings.saved").get()
                 : Teeto.getTeeto().getResponses().getResponse("settings.not_saved").get();
     }
@@ -281,11 +281,7 @@ public final class AudioCommands {
 
         String channelName = settings.getSetting(GuildSettings.Settings.HELL_CHANNEL).getAsString();
 
-        for(VoiceChannel channel : g.getVoiceChannels())
-            if(channel.getName().toLowerCase().equals(channelName.toLowerCase()))
-                return channel;
-
-        return null;
+        return g.getVoiceChannelById(settings.getSetting(GuildSettings.Settings.HELL_CHANNEL).getAsLong());
     }
 
     /**

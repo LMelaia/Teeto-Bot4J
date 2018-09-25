@@ -58,7 +58,7 @@ public final class SystemCommands {
 
     /**
      * Reboots the application. This only works
-     * in a release environment.
+     * in a release environment on windows.
      *
      * @param channel the message channel the command
      *                came from.
