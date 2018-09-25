@@ -127,7 +127,7 @@ public final class AudioCommands {
         if(channel == null)
             return RESPONSES.getResponse("audio.no_channel").get();
 
-        guildPlayer.connectToVoice(channel, true);
+        guildPlayer.connectToVoice(channel, false);
 
         guildPlayer.addListener(new AudioEventAdapter() {
             @Override
