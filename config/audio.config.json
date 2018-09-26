@@ -29,6 +29,12 @@
       "names": ["duel"],
       "displayName": "It's time to d-d-d-d-d-d duel",
       "fileName": "duel.aud"
+    },
+    {
+      "id": ".despacito",
+      "names": ["des", "despacito"],
+      "displayName": "Despacito Featuring Just Bieber",
+      "fileName": "despacito.aud"
     }
   ]
 }
