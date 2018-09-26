@@ -23,6 +23,7 @@ import net.dv8tion.jda.core.JDABuilder;
 import net.dv8tion.jda.core.entities.Game;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.events.*;
+import net.dv8tion.jda.core.events.guild.voice.GuildVoiceMoveEvent;
 import net.dv8tion.jda.core.hooks.EventListener;
 import net.lmelaia.teeto.aud.AudioManager;
 import net.lmelaia.teeto.command.CommandManager;
@@ -347,6 +348,12 @@ public class Teeto {
                 logResumedEvent((ResumedEvent) evt);
             else if(evt instanceof ReadyEvent)
                 logReadyEvent((ReadyEvent) evt);
+            else if(evt instanceof GuildVoiceMoveEvent){
+                GuildVoiceMoveEvent event = (GuildVoiceMoveEvent) evt;
+                if(event.getMember().getUser().getIdLong() == Teeto.getTeeto().javaDiscordAPI.getSelfUser().getIdLong())
+                    Teeto.getTeeto().commandManager.invokeCommand(".audio.play", event.getGuild());
+                LOG.info("Resetting audio because bot was moved.");
+            }
         }
 
         //###############
