@@ -21,6 +21,7 @@ import com.sedmelluq.discord.lavaplayer.player.event.AudioEventAdapter;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackEndReason;
 import net.dv8tion.jda.core.entities.Guild;
+import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.entities.VoiceChannel;
 import net.dv8tion.jda.core.managers.GuildController;
@@ -194,7 +195,6 @@ public final class AudioCommands {
     @CommandHandler(".audio.play_with")
     public static String playWith(Guild g, User author){
         try{g = getIfNotNull(g);} catch (NullPointerException e){return e.getMessage();}
-        AudioPlayer guildPlayer = AUDIO_MANAGER.getAudioPlayer(g);
         GuildController controller = new GuildController(g);
 
         if(getDesignatedHellChannel(g) == null){
@@ -266,6 +266,52 @@ public final class AudioCommands {
         }
 
         return ret.toString();
+    }
+
+    /**
+     * Takes a user to the designated hell channel
+     * and invokes the audio.play command.
+     *
+     * @param g -
+     * @param args -
+     * @return response.
+     */
+    @SuppressWarnings("ConstantConditions")
+    @CommandHandler(".audio.take")
+    public static String take(Guild g, String[] args){
+        try{g = getIfNotNull(g);} catch (NullPointerException e){return e.getMessage();}
+
+        if(args.length != 2)
+            return Teeto.getTeeto().getResponses().getResponse("cmd.arg_length_error")
+                    .setPlaceholder("{@command}", "take")
+                    .setPlaceholder("{@argLength}", String.valueOf(args.length - 1))
+                    .get();
+
+        String user = args[1];
+        user = user.replace("#", "");
+
+        for(Member member : g.getMembers()){
+            if(member.getUser().getDiscriminator().equals(user)){
+                GuildController controller = new GuildController(g);
+
+                if(getDesignatedHellChannel(g) == null){
+                    return RESPONSES.getResponse("audio.no_channel").get();
+                }
+
+                try{
+                    controller.moveVoiceMember(member, getDesignatedHellChannel(g)).queue();
+                    Teeto.getTeeto().getCommandManager().invokeCommand(".audio.play", g);
+                } catch (IllegalStateException e){
+                    return RESPONSES.getResponse("audio.cant_take")
+                            .setPlaceholder("{@channel}", getDesignatedHellChannel(g).getName())
+                            .get();
+                }
+
+                return RESPONSES.getResponse("audio.taken").get();
+            }
+        }
+
+        return RESPONSES.getResponse("audio.user_not_found").get();
     }
 
     /**

@@ -104,6 +104,13 @@
       "description": "Updates the information displayed in the game Teeto is playing.",
       "extraInfo": null,
       "visible": false
+    },
+    {
+      "commandID": ".audio.take",
+      "names": ["take"],
+      "description": "Takes the given user to hell with Teeto.",
+      "extraInfo": "Usage \"take <user-id>\", where <user-id> is the last four digits of their name beginning with a #. e.g. take 1010",
+      "visible": true
     }
   ]
 }
