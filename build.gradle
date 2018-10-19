@@ -25,6 +25,8 @@ sourceCompatibility = 1.8
 
 mainClassName="net.lmelaia.teeto.Main"
 
+applicationDefaultJvmArgs = ["-Xms250m", "-Xmx650m"]
+
 repositories {
     mavenCentral()
     jcenter()
