@@ -35,6 +35,12 @@
       "names": ["des", "despacito"],
       "displayName": "Despacito Featuring Just Bieber",
       "fileName": "despacito.aud"
+    },
+    {
+      "id": ".paper",
+      "names": ["paper", "threw"],
+      "displayName": "Your mom's a hoe",
+      "fileName": "paper.aud"
     }
   ]
 }

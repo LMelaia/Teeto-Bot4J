@@ -53,17 +53,19 @@ public class AudioPlayer {
     /**
      * Internal audio player API.
      */
-    private final com.sedmelluq.discord.lavaplayer.player.AudioPlayer internalPlayer;
+    private com.sedmelluq.discord.lavaplayer.player.AudioPlayer internalPlayer;
 
     /**
      * The audio manager.
      */
-    private final AudioPlayerManager audioPlayerManager;
+    private AudioPlayerManager audioPlayerManager;
 
     /**
      * The guild this audio player is for.
      */
     private final Guild guild;
+
+    private final net.lmelaia.teeto.aud.AudioManager imanager;
 
     /**
      * Constructs a new guild audio player.
@@ -71,10 +73,11 @@ public class AudioPlayer {
      * @param manager the audio manager.
      * @param guild the guild.
      */
-    AudioPlayer(AudioPlayerManager manager, Guild guild){
+    AudioPlayer(net.lmelaia.teeto.aud.AudioManager imanager, AudioPlayerManager manager, Guild guild){
         playerCount++;
         LOG.info("Creating new audio player for guild: " + guild.getName());
         LOG.info("Audio player count: " + playerCount);
+        this.imanager = imanager;
         this.internalPlayer = manager.createPlayer();
         this.audioPlayerManager = manager;
         this.guild = guild;
@@ -227,6 +230,8 @@ public class AudioPlayer {
                 LOG.debug("Playing audio track: " + track.getIdentifier());
                 if(plays > 99){
                     LOG.info("100 Plays on audio track: " + track.getIdentifier());
+                    LOG.info("Reached given number of plays - performing memory clear.");
+                    memoryLeakFix1(track);
                     plays = 0;
                 }
                 plays++;
@@ -255,6 +260,17 @@ public class AudioPlayer {
                 LOG.error("Failed to play audio resource: " + identifier, exception);
             }
         });
+    }
+
+    //The first attempt at fixing a weird
+    //memory leak expected to originate
+    //from the JDA player.
+    private void memoryLeakFix1(AudioTrack track){
+        AudioTrack clone = track.makeClone();
+        track.stop();
+        this.internalPlayer.stopTrack();
+        this.internalPlayer.playTrack(clone);
+        System.gc();
     }
 
     /**

@@ -59,7 +59,7 @@ public class AudioManager {
     /**
      * Audio player manager.
      */
-    private final AudioPlayerManager playerManager;
+    private AudioPlayerManager playerManager;
 
     /**
      * Constructs a new audio manager.
@@ -134,7 +134,6 @@ public class AudioManager {
         return instance;
     }
 
-
     /**
      * Constructs or returns the audio player for the given guild.
      *
@@ -146,7 +145,7 @@ public class AudioManager {
         AudioPlayer audioPlayer = audioPlayers.get(guildId);
 
         if (audioPlayer == null) {
-            audioPlayer = new AudioPlayer(playerManager, guild);
+            audioPlayer = new AudioPlayer(this, playerManager, guild);
             audioPlayers.put(guildId, audioPlayer);
         }
 
