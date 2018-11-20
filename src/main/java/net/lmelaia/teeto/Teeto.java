@@ -35,7 +35,10 @@ import org.apache.logging.log4j.Logger;
 
 import javax.security.auth.login.LoginException;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.nio.charset.StandardCharsets;
 import java.time.format.DateTimeFormatter;
 
 /**
@@ -117,6 +120,7 @@ public class Teeto {
         JDABuilder builder = new JDABuilder(AccountType.BOT).setToken(getToken());
         builder.addEventListener(EVENT_LOGGER);
 
+        //noinspection ConstantConditions
         builder.setGame(Game.of(Game.GameType.DEFAULT,
                 teetoConfig.getName() + " v" + teetoConfig.getVersion() + " | " + teetoConfig.getHelpCommand()));
 
@@ -303,8 +307,28 @@ public class Teeto {
     /**
      * @return the token in string form from the .TOKEN file.
      */
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     private static String getToken() {
         try {
+            File tokenFile = Constants.getTokenFile();
+
+            if(!tokenFile.exists()){
+                tokenFile.createNewFile();
+
+                OutputStreamWriter writer
+                        = new OutputStreamWriter(new FileOutputStream(tokenFile), StandardCharsets.UTF_8);
+
+                writer.write("Put secret bot token in this file. " +
+                        "Do not include spaces or new lines!");
+                writer.flush();
+                writer.close();
+
+                LOG.fatal("Token file not found at boot-up. Please enter secret bot token in the .TOKEN file.");
+                Teeto.shutdown();
+                return null;
+            }
+
+
             return FileUtil.readFile(Constants.getTokenFile());
         } catch (IOException e) {
             LOG.log(Level.FATAL, "Failed to read token file", e);

@@ -20,6 +20,7 @@ import net.lmelaia.teeto.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 
 public final class FileUtil {
 
@@ -41,7 +42,7 @@ public final class FileUtil {
      */
     public static String readFile(File file) throws IOException {
         StringBuilder result = new StringBuilder();
-        try (FileInputStream reader = new FileInputStream(file)){
+        try (InputStreamReader reader = new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8)){
             int val;
             while((val = reader.read()) != -1){
                 result.append((char)val);

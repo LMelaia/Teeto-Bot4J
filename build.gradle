@@ -15,7 +15,7 @@
  *  along with TeetoBot4J.  If not, see <https://www.gnu.org/licenses/>.
  */
 group 'teetobot'
-version '2.3'
+version '2.6.1'
 
 apply plugin: 'java'
 apply plugin: 'application'
