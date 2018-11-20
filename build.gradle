@@ -15,7 +15,7 @@
  *  along with TeetoBot4J.  If not, see <https://www.gnu.org/licenses/>.
  */
 group 'teetobot'
-version '2.5'
+version '2.3'
 
 apply plugin: 'java'
 apply plugin: 'application'
@@ -24,8 +24,6 @@ apply plugin: 'idea'
 sourceCompatibility = 1.8
 
 mainClassName="net.lmelaia.teeto.Main"
-
-applicationDefaultJvmArgs = ["-Xms250m", "-Xmx650m"]
 
 repositories {
     mavenCentral()
@@ -63,7 +61,6 @@ dependencies {
     //Reflections library for annotation processing.
     //https://mvnrepository.com/artifact/org.reflections/reflections
     compile group: 'org.reflections', name: 'reflections', version: '0.9.10'
-
 }
 
 //#################################
